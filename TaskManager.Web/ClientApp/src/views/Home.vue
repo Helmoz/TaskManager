@@ -1,14 +1,14 @@
 <template>
-	<HelloWorld/>
+	<v-container grid-list-xs>
+		<v-layout row wrap="">
+			<v-flex xs12>
+				<h1>Home</h1>
+			</v-flex>
+		</v-layout>
+	</v-container>
 </template>
 
 <script>
-import HelloWorld from '../components/HelloWorld'
-
-export default {
-  components: {
-    HelloWorld
-  }
-}
+export default {}
 </script>
 

@@ -7,6 +7,15 @@
 						<h1 class="text-xs-center card_header">TaskManager</h1>
 						<v-form ref="form" lazy-validation class="login_form">
 							<v-text-field
+								outline
+								v-model="name"
+								:error-messages="nameErrors"
+								label="Имя и фамилия"
+								required
+								@input="$v.name.$touch()"
+								@blur="$v.name.$touch()"
+							></v-text-field>
+							<v-text-field
 								v-model="email"
 								label="E-mail"
 								:error-messages="emailErrors"
@@ -33,7 +42,7 @@
 								block
 								:disabled="$v.$invalid"
 								@click="onSubmit"
-							>Войти</v-btn>
+							>Регистрация</v-btn>
 							<div v-if="error" class="login_error">
 								<v-divider></v-divider>
 								<p class="login_error_message">{{error}}</p>
@@ -43,8 +52,8 @@
 				</v-layout>
 			</v-container>
 		</v-card>
-		<v-card flat style="margin-top: 10px" class="card card_register">Ещё нет аккаунта?
-			<router-link to="/registration" style="cursor: pointer">Зарегистрируйтесь</router-link>
+		<v-card flat style="margin-top: 10px" class="card card_register">Есть аккаунт?
+			<router-link to="/signin" style="cursor: pointer">Вход</router-link>
 		</v-card>
 	</div>
 </template>
@@ -57,13 +66,15 @@ export default {
   mixins: [validationMixin],
   validations: {
     password: { required, minLength: minLength(8) },
-    email: { required, email }
+    email: { required, email },
+    name: { required }
   },
   data() {
     return {
       show: false,
       email: '',
-      password: ''
+      password: '',
+      name: ''
     }
   },
   computed: {
@@ -77,15 +88,25 @@ export default {
       const errors = []
       if (!this.$v.password.$dirty) return errors
       !this.$v.password.minLength &&
-        errors.push('Password must be at most 8 characters long')
-      !this.$v.password.required && errors.push('Password is required.')
+        errors.push('Создайте пароль минимум из 8 симоволов')
+      !this.$v.password.required &&
+        errors.push('Это поле обязательно к заполнению.')
       return errors
     },
     emailErrors() {
       const errors = []
       if (!this.$v.email.$dirty) return errors
-      !this.$v.email.email && errors.push('Must be valid e-mail')
-      !this.$v.email.required && errors.push('E-mail is required')
+      !this.$v.email.email &&
+        errors.push('Введите корректный электронный адрес.')
+      !this.$v.email.required &&
+        errors.push('Это поле обязательно к заполнению.')
+      return errors
+    },
+    nameErrors() {
+      const errors = []
+      if (!this.$v.name.$dirty) return errors
+      !this.$v.name.required &&
+        errors.push('Это поле обязательно к заполнению.')
       return errors
     }
   },
@@ -95,10 +116,11 @@ export default {
       if (!this.$v.$invalid) {
         const user = {
           email: this.email,
-          password: this.password
+          password: this.password,
+          name: this.name
         }
         this.$store
-          .dispatch('loginUser', user)
+          .dispatch('registerUser', user)
           .then(() => {
             this.$router.push('/')
           })
