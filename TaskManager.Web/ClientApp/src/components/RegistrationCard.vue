@@ -14,6 +14,7 @@
 								required
 								@input="$v.name.$touch()"
 								@blur="$v.name.$touch()"
+								@keyup.enter="onSubmit"
 							></v-text-field>
 							<v-text-field
 								v-model="email"
@@ -21,6 +22,7 @@
 								:error-messages="emailErrors"
 								@input="$v.email.$touch()"
 								@blur="$v.email.$touch()"
+								@keyup.enter="onSubmit"
 								required
 								outline
 							></v-text-field>
@@ -33,6 +35,7 @@
 								:error-messages="passwordErrors"
 								@input="$v.password.$touch()"
 								@blur="$v.password.$touch()"
+								@keyup.enter="onSubmit"
 								required
 								@click:append="show = !show"
 							></v-text-field>

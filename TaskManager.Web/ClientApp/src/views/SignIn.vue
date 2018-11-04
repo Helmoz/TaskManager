@@ -1,6 +1,6 @@
 <template>
 	<v-container grid-list-xs fluid style="height: 100%">
-		<v-layout row wrap="" style="height: 70%" justify-center align-center>
+		<v-layout row wrap="" style="height: 75%" justify-center align-center>
 			<v-flex xs12 sm6 md5 lg3 xl3 :style="flexBasisOnXl()">
 				<LoginCard></LoginCard>
 			</v-flex>

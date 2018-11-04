@@ -1,68 +1,71 @@
 <template>
 	<v-app>
-		<v-navigation-drawer v-model="sideNav" absolute temporary>
-			<v-list class="pt-0">
-				<v-list-tile v-for="item in menuItems" :key="item.title" @click :to="item.link">
+		<v-navigation-drawer
+			persistent
+			:mini-variant="miniVariant"
+			clipped
+			v-model="sideNavigation"
+			disable-resize-watcher
+			fixed
+			app
+			mobile-break-point="600"
+			v-show="user"
+		>
+			<v-list style="height: 100%;">
+				<v-list-tile v-for="(item, i) in items" :key="i" :to="item.link" :style="fullHeight()">
 					<v-list-tile-action>
-						<v-icon>{{ item.icon }}</v-icon>
+						<v-icon :style="iconSize()" v-html="item.icon"></v-icon>
 					</v-list-tile-action>
 					<v-list-tile-content>
-						<v-list-tile-title>{{ item.title }}</v-list-tile-title>
+						<v-list-tile-title v-text="item.title"></v-list-tile-title>
 					</v-list-tile-content>
 				</v-list-tile>
-				<v-list-tile @click="onLogout">
+				<v-list-tile
+					v-for="(item, i) in userItems"
+					:key="i+items.length"
+					:to="item.link"
+					@click="item.method"
+					class="hidden-sm-and-up"
+				>
 					<v-list-tile-action>
-						<v-icon>exit_to_app</v-icon>
+						<v-icon v-html="item.icon"></v-icon>
 					</v-list-tile-action>
 					<v-list-tile-content>
-						<v-list-tile-title>Выйти</v-list-tile-title>
+						<v-list-tile-title v-text="item.title"></v-list-tile-title>
 					</v-list-tile-content>
 				</v-list-tile>
 			</v-list>
 		</v-navigation-drawer>
-		<v-toolbar dark class="primary">
-			<v-toolbar-side-icon @click="sideNav = !sideNav" class="hidden-sm-and-up"></v-toolbar-side-icon>
-			<v-toolbar-title class="title">
+		<v-toolbar app clipped-left dark class="primary">
+			<v-toolbar-side-icon @click="sideNav = !sideNav" class="hidden-sm-and-up" v-if="user"></v-toolbar-side-icon>
+			<v-toolbar-title>
 				<router-link to="/" tag="span" style="cursor: pointer" class="logo">TaskManager</router-link>
 			</v-toolbar-title>
 			<v-spacer></v-spacer>
 			<v-toolbar-items class="hidden-xs-only">
-				<v-btn flat v-for="item in menuItems" :key="item.title" :to="item.link">
-					<v-icon left>{{item.icon}}</v-icon>
-					{{item.title}}
-				</v-btn>
 				<v-menu bottom offset-y v-if="user">
 					<v-btn flat slot="activator">
 						<v-icon left>person</v-icon>
 						{{user.name}}
 					</v-btn>
 					<v-list style="width: 220px">
-						<v-list-tile @click>
+						<v-list-tile v-for="(item, i) in userItems" :key="i" :to="item.link" @click="item.method">
 							<v-list-tile-action>
-								<v-icon>account_circle</v-icon>
+								<v-icon v-html="item.icon"></v-icon>
 							</v-list-tile-action>
 							<v-list-tile-content>
-								<v-list-tile-title>Профиль</v-list-tile-title>
-							</v-list-tile-content>
-						</v-list-tile>
-						<v-divider></v-divider>
-						<v-list-tile @click="onLogout">
-							<v-list-tile-action>
-								<v-icon>exit_to_app</v-icon>
-							</v-list-tile-action>
-							<v-list-tile-content>
-								<v-list-tile-title>Выйти</v-list-tile-title>
+								<v-list-tile-title v-text="item.title"></v-list-tile-title>
 							</v-list-tile-content>
 						</v-list-tile>
 					</v-list>
 				</v-menu>
 			</v-toolbar-items>
 		</v-toolbar>
-		<main>
+		<v-content>
 			<transition name="slide-fade" mode="out-in">
 				<router-view></router-view>
 			</transition>
-		</main>
+		</v-content>
 	</v-app>
 </template>
 
@@ -71,28 +74,68 @@ export default {
   name: 'App',
   data() {
     return {
-      sideNav: null
+      sideNav: false,
+      items: [
+        { title: 'Список задач', icon: 'list', link: '/tasks' },
+        { title: 'Создать задачу', icon: 'create', link: '/create' }
+      ],
+      userItems: [
+        {
+          title: 'Профиль',
+          icon: 'account_circle',
+          link: '/profile',
+          method: function() {}
+        },
+        { title: 'Выйти', icon: 'exit_to_app', method: this.onLogout }
+      ]
     }
   },
   computed: {
     userIsAuthenticated() {
       return this.$store.getters.user !== null
     },
+    sideNavigation: {
+      get() {
+        if (this.$vuetify.breakpoint.xs) {
+          if (this.sideNav) {
+            return true
+          }
+          return false
+        }
+      },
+      set(newValue) {
+        this.sideNav = newValue
+      }
+    },
+    miniVariant() {
+      return !this.$vuetify.breakpoint.xs
+    },
     user() {
       return this.$store.getters.user
-    },
-    menuItems() {
-      let menuItems = [{ icon: 'lock_open', title: 'Войти', link: '/signin' }]
-      if (this.userIsAuthenticated) {
-        menuItems = [{ icon: 'vpn_key', title: 'Задачи', link: '/tasks' }]
-      }
-      return menuItems
     }
   },
   methods: {
     onLogout() {
       this.$store.dispatch('logoutUser')
       this.$router.push('/authentication')
+    },
+    iconSize() {
+      if (this.$vuetify.breakpoint.smAndUp) {
+        return { 'font-size': '50px' }
+      }
+    },
+    fullHeight() {
+      if (this.$vuetify.breakpoint.smAndUp) {
+        return { height: '100px' }
+      }
+    }
+  },
+  mounted() {
+    if (this.$vuetify.breakpoint.smAndUp) {
+      var a = document.getElementsByClassName('v-list__tile v-list__tile--link')
+      for (let item of a) {
+        item.setAttribute('style', 'height:100%;')
+      }
     }
   }
 }
@@ -130,6 +173,5 @@ export default {
 .slide-fade-enter, .slide-fade-leave-to 
 	transform translateX(10px)
 	opacity 0
-
 </style>
 

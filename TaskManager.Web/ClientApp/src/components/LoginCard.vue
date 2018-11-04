@@ -14,6 +14,7 @@
 								@blur="$v.email.$touch()"
 								required
 								outline
+								@keyup.enter="onSubmit"
 							></v-text-field>
 							<v-text-field
 								outline
@@ -25,6 +26,7 @@
 								@input="$v.password.$touch()"
 								@blur="$v.password.$touch()"
 								required
+								@keyup.enter="onSubmit"
 								@click:append="show = !show"
 							></v-text-field>
 							<v-btn
@@ -77,15 +79,18 @@ export default {
       const errors = []
       if (!this.$v.password.$dirty) return errors
       !this.$v.password.minLength &&
-        errors.push('Password must be at most 8 characters long')
-      !this.$v.password.required && errors.push('Password is required.')
+        errors.push('Введите пароль минимум из 8 симоволов')
+      !this.$v.password.required &&
+        errors.push('Это поле обязательно к заполнению.')
       return errors
     },
     emailErrors() {
       const errors = []
       if (!this.$v.email.$dirty) return errors
-      !this.$v.email.email && errors.push('Must be valid e-mail')
-      !this.$v.email.required && errors.push('E-mail is required')
+      !this.$v.email.email &&
+        errors.push('Введите корректный электронный адрес.')
+      !this.$v.email.required &&
+        errors.push('Это поле обязательно к заполнению.')
       return errors
     }
   },
@@ -121,6 +126,7 @@ export default {
 			text-align center
 			color #FF5252
 			margin-bottom 0
+
 .card
 	border 1px solid #e6e6e6
 	border-radius 1px

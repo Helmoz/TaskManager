@@ -1,6 +1,6 @@
 <template>
 	<v-container grid-list-xs style="height: 100%">
-		<v-layout row wrap="" justify-center align-center style="height: 70%">
+		<v-layout row wrap="" justify-center align-center style="height: 100%">
 			<v-flex xs12 lg10 xl7>
 				<v-container grid-list-xs fluid>
 					<v-layout row wrap="" justify-center align-center>

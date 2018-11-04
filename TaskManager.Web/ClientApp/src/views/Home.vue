@@ -1,14 +1,12 @@
 <template>
-	<v-container grid-list-xs>
-		<v-layout row wrap="">
-			<v-flex xs12>
-				<h1>Home</h1>
-			</v-flex>
-		</v-layout>
-	</v-container>
+	<v-container>Home</v-container>
 </template>
 
 <script>
-export default {}
+export default {
+  data() {
+    return {}
+  }
+}
 </script>
 
