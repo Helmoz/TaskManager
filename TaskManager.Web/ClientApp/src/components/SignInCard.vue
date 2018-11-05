@@ -19,15 +19,15 @@
 							<v-text-field
 								outline
 								v-model="password"
-								:append-icon="show ? 'visibility_off' : 'visibility'"
-								:type="show ? 'text' : 'password'"
+								:append-icon="showPassword ? 'visibility_off' : 'visibility'"
+								:type="showPassword ? 'text' : 'password'"
 								label="Пароль"
 								:error-messages="passwordErrors"
 								@input="$v.password.$touch()"
 								@blur="$v.password.$touch()"
 								required
 								@keyup.enter="onSubmit"
-								@click:append="show = !show"
+								@click:append="showPassword = !showPassword"
 							></v-text-field>
 							<v-btn
 								:loading="loading"
@@ -52,29 +52,23 @@
 </template>
 
 <script>
-import { validationMixin } from 'vuelidate'
 import { required, minLength, email } from 'vuelidate/lib/validators'
+import { mapGetters, mapActions } from 'vuex'
 
 export default {
-  mixins: [validationMixin],
   validations: {
     password: { required, minLength: minLength(8) },
     email: { required, email }
   },
   data() {
     return {
-      show: false,
+      showPassword: false,
       email: '',
       password: ''
     }
   },
   computed: {
-    loading() {
-      return this.$store.getters.loading
-    },
-    error() {
-      return this.$store.getters.error
-    },
+    ...mapGetters(['loading', 'error']),
     passwordErrors() {
       const errors = []
       if (!this.$v.password.$dirty) return errors
@@ -95,6 +89,7 @@ export default {
     }
   },
   methods: {
+    ...mapActions(['signIn']),
     onSubmit() {
       this.$v.$touch()
       if (!this.$v.$invalid) {
@@ -102,8 +97,7 @@ export default {
           email: this.email,
           password: this.password
         }
-        this.$store
-          .dispatch('loginUser', user)
+        this.signIn(user)
           .then(() => {
             this.$router.push('/')
           })

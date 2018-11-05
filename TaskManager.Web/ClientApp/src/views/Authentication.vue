@@ -4,7 +4,7 @@
 			<v-flex xs12 lg10 xl7>
 				<v-container grid-list-xs fluid>
 					<v-layout row wrap="" justify-center align-center>
-						<v-flex v-if="xl" lg6>
+						<v-flex v-if="showImage" lg6>
 							<img src="../assets/iphones.png" alt="">
 						</v-flex>
 						<v-flex xs12 sm6 md5 lg6 :style="flexBasisOnXl()">
@@ -25,7 +25,7 @@ export default {
     RegistrationCard
   },
   computed: {
-    xl() {
+    showImage() {
       return this.$vuetify.breakpoint.lgAndUp
     }
   },

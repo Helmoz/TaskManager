@@ -5,7 +5,7 @@
 				<v-layout row wrap="" justify-center>
 					<v-flex xs12>
 						<h1 class="text-xs-center card_header">TaskManager</h1>
-						<v-form ref="form" lazy-validation class="login_form">
+						<v-form ref="form" lazy-validation class="registration_form">
 							<v-text-field
 								outline
 								v-model="name"
@@ -29,15 +29,15 @@
 							<v-text-field
 								outline
 								v-model="password"
-								:append-icon="show ? 'visibility_off' : 'visibility'"
-								:type="show ? 'text' : 'password'"
+								:append-icon="showPassword ? 'visibility_off' : 'visibility'"
+								:type="showPassword ? 'text' : 'password'"
 								label="Пароль"
 								:error-messages="passwordErrors"
 								@input="$v.password.$touch()"
 								@blur="$v.password.$touch()"
 								@keyup.enter="onSubmit"
 								required
-								@click:append="show = !show"
+								@click:append="showPassword = !showPassword"
 							></v-text-field>
 							<v-btn
 								:loading="loading"
@@ -46,27 +46,26 @@
 								:disabled="$v.$invalid"
 								@click="onSubmit"
 							>Регистрация</v-btn>
-							<div v-if="error" class="login_error">
+							<div v-if="error" class="registration_error">
 								<v-divider></v-divider>
-								<p class="login_error_message">{{error}}</p>
+								<p class="registration_error_message">{{error}}</p>
 							</div>
 						</v-form>
 					</v-flex>
 				</v-layout>
 			</v-container>
 		</v-card>
-		<v-card flat style="margin-top: 10px" class="card card_register">Есть аккаунт?
+		<v-card flat style="margin-top: 10px" class="card card_login">Есть аккаунт?
 			<router-link to="/signin" style="cursor: pointer">Вход</router-link>
 		</v-card>
 	</div>
 </template>
 
 <script>
-import { validationMixin } from 'vuelidate'
 import { required, minLength, email } from 'vuelidate/lib/validators'
+import { mapGetters, mapActions } from 'vuex'
 
 export default {
-  mixins: [validationMixin],
   validations: {
     password: { required, minLength: minLength(8) },
     email: { required, email },
@@ -74,19 +73,14 @@ export default {
   },
   data() {
     return {
-      show: false,
+      showPassword: false,
       email: '',
       password: '',
       name: ''
     }
   },
   computed: {
-    loading() {
-      return this.$store.getters.loading
-    },
-    error() {
-      return this.$store.getters.error
-    },
+    ...mapGetters(['loading', 'error']),
     passwordErrors() {
       const errors = []
       if (!this.$v.password.$dirty) return errors
@@ -114,6 +108,7 @@ export default {
     }
   },
   methods: {
+    ...mapActions(['registerUser']),
     onSubmit() {
       this.$v.$touch()
       if (!this.$v.$invalid) {
@@ -122,8 +117,7 @@ export default {
           password: this.password,
           name: this.name
         }
-        this.$store
-          .dispatch('registerUser', user)
+        this.registerUser(user)
           .then(() => {
             this.$router.push('/')
           })
@@ -136,7 +130,7 @@ export default {
 
 
 <style lang="stylus" scoped>
-.login
+.registration
 	&_form
 		margin-top 30px
 	&_error
@@ -151,7 +145,7 @@ export default {
 	border-radius 1px
 	&_container
 		padding 40px
-	&_register
+	&_login
 		padding 25px 15px
 		text-align center
 	&_header

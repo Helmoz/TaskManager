@@ -12,7 +12,7 @@ export default {
     }
   },
   actions: {
-    async loginUser({ commit, dispatch }, { email, password }) {
+    async signIn({ commit, dispatch }, { email, password }) {
       commit('clearError')
       commit('setLoading', true)
       try {
@@ -70,7 +70,7 @@ export default {
         )
       })
     },
-    logoutUser({ commit }) {
+    signOut({ commit }) {
       firebase.auth().signOut()
       commit('setUser', null)
     }
