@@ -29,6 +29,12 @@ export default new Router({
       path: '/registration',
       name: 'Зарегистрироваться • TaskManager',
       component: () => import('../views/Registration.vue')
+    },
+    {
+      path: '/profile',
+      name: 'Профиль • TaskManager',
+      component: () => import('../views/Profile.vue'),
+      beforeEnter: auth
     }
   ]
 })

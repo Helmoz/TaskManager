@@ -21,7 +21,12 @@ export default {
           .signInWithEmailAndPassword(email, password)
         commit(
           'setUser',
-          new User(user.user.uid, user.user.email, user.user.displayName)
+          new User(
+            user.user.uid,
+            user.user.email,
+            user.user.displayName,
+            user.user.photoURL
+          )
         )
         commit('setLoading', false)
       } catch (error) {
@@ -39,12 +44,19 @@ export default {
         var currentUser = firebase.auth().currentUser
 
         currentUser.updateProfile({
-          displayName: name
+          displayName: name,
+          photoURL:
+            'https://www0.sun.ac.za/chemistry/images/0/0b/Blank_avatar.jpeg'
         })
 
         commit(
           'setUser',
-          new User(currentUser.uid, currentUser.email, currentUser.displayName)
+          new User(
+            currentUser.uid,
+            currentUser.email,
+            currentUser.displayName,
+            currentUser.photoURL
+          )
         )
 
         commit('setLoading', false)
@@ -61,7 +73,7 @@ export default {
             if (user) {
               commit(
                 'setUser',
-                new User(user.uid, user.email, user.displayName)
+                new User(user.uid, user.email, user.displayName, user.photoURL)
               )
             }
             resolve(state.user)

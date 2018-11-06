@@ -43,12 +43,15 @@
 			</v-toolbar-title>
 			<v-spacer></v-spacer>
 			<v-toolbar-items class="hidden-xs-only">
-				<v-menu right bottom transition="slide-x-transition" offset-y v-if="user">
+				<v-menu right left transition="slide-x-transition" offset-y v-if="user" v-model="menu">
 					<v-btn flat slot="activator">
-						<v-icon left>person</v-icon>
 						{{user.name}}
+						<v-avatar :size="40" style="margin-left: 20px; margin-right: 20px">
+							<img :src="user.photo" alt="avatar">
+						</v-avatar>
+						<v-icon v-html="menu ? 'expand_less' : 'expand_more'"></v-icon>
 					</v-btn>
-					<v-list style="width: 220px">
+					<v-list>
 						<v-list-tile v-for="(item, i) in userItems" :key="i" :to="item.link" @click="item.method">
 							<v-list-tile-action>
 								<v-icon v-html="item.icon"></v-icon>
@@ -71,6 +74,7 @@ export default {
   data() {
     return {
       sideNav: false,
+      menu: false,
       items: [
         { title: 'Список задач', icon: 'list', link: '/tasks' },
         { title: 'Создать задачу', icon: 'create', link: '/create' }
@@ -139,4 +143,5 @@ export default {
 	font-family Billabong
 	font-size 40px
 	margin-bottom 10px
+
 </style>
