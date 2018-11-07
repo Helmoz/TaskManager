@@ -3,6 +3,7 @@ import Vuex from 'vuex'
 
 import common from './common'
 import user from './user'
+import projects from './projects'
 
 import firebase from 'firebase/app'
 import 'firebase/auth'
@@ -16,6 +17,7 @@ firebase.initializeApp(config)
 export const store = new Vuex.Store({
   modules: {
     common,
-    user
+    user,
+    projects
   }
 })

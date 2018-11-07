@@ -1,5 +1,5 @@
 <template>
-	<v-container grid-list-xs class="user_container">
+	<v-container grid-list-xs>
 		<v-layout row wrap="" justify-center>
 			<v-flex xs12 sm8 lg6 xl6>
 				<v-layout row wrap="">
@@ -31,8 +31,6 @@ export default {
 
 <style lang="stylus" scoped>
 .user
-	&_container
-		margin-top 35px
 	&_avatar
 		width 100%
 		border-radius 50%

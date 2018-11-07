@@ -1,7 +1,16 @@
 export default {
   state: {
     loading: false,
-    error: null
+    error: null,
+    mainMenu: [
+      { title: 'Список задач', icon: 'format_list_bulleted', link: '/tasks' },
+      { title: 'Мои задачи', icon: 'face', link: '/assigned' },
+      { title: 'Завершенные', icon: 'check', link: '/completed' }
+    ],
+    subMenu: [
+      { title: 'Профиль', icon: 'person', link: '/profile' },
+      { title: 'О проекте', icon: 'info', link: '/about' }
+    ]
   },
   mutations: {
     setLoading(state, payload) {
@@ -41,6 +50,12 @@ export default {
     },
     error(state) {
       return state.error
+    },
+    mainMenu(state) {
+      return state.mainMenu
+    },
+    subMenu(state) {
+      return state.subMenu
     }
   }
 }

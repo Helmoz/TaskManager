@@ -31,9 +31,33 @@ export default new Router({
       component: () => import('../views/Registration.vue')
     },
     {
+      path: '/tasks',
+      name: 'Список задач • TaskManager',
+      component: () => import('../views/Tasks.vue'),
+      beforeEnter: auth
+    },
+    {
+      path: '/assigned',
+      name: 'Мои задачи • TaskManager',
+      component: () => import('../views/Assigned.vue'),
+      beforeEnter: auth
+    },
+    {
+      path: '/completed',
+      name: 'Завершенные • TaskManager',
+      component: () => import('../views/Completed.vue'),
+      beforeEnter: auth
+    },
+    {
       path: '/profile',
       name: 'Профиль • TaskManager',
       component: () => import('../views/Profile.vue'),
+      beforeEnter: auth
+    },
+    {
+      path: '/about',
+      name: 'О проекте • TaskManager',
+      component: () => import('../views/About.vue'),
       beforeEnter: auth
     }
   ]

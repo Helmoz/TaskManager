@@ -2,7 +2,7 @@
 	<v-container grid-list-xs style="height: 100%">
 		<v-layout row wrap="" justify-center align-center style="height: 100%">
 			<v-flex xs12 lg10 xl7>
-				<v-container grid-list-xs fluid>
+				<v-container grid-list-xs>
 					<v-layout row wrap="" justify-center align-center>
 						<v-flex v-if="showImage" lg6>
 							<img src="../assets/iphones.png" alt="">
