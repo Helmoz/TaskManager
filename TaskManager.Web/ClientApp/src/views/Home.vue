@@ -27,8 +27,9 @@
 		</v-layout>
 		<v-divider v-if="$vuetify.breakpoint.mdAndUp"></v-divider>
 		<v-container>
+			<v-text-field v-model="search" placeholder="Search" append-icon="search" solo></v-text-field>
 			<v-data-iterator
-				:items="projects"
+				:items="filteredProjects"
 				:rows-per-page-items="rowsPerPageItems"
 				rows-per-page-text="Элементов на странице:"
 				:pagination.sync="pagination"
@@ -41,14 +42,25 @@
 					<v-list two-line>
 						<v-list-tile @click ripple>
 							<v-list-tile-avatar>
-								<v-icon v-html="props.item.icon"></v-icon>
+								<v-icon v-html="typesIcon[props.item.type]"></v-icon>
 							</v-list-tile-avatar>
 							<v-list-tile-content>
 								<v-list-tile-title>{{ props.item.name }}</v-list-tile-title>
-								<v-list-tile-sub-title>{{ props.item.description}}</v-list-tile-sub-title>
+								<v-list-tile-sub-title>{{props.item.description}}</v-list-tile-sub-title>
 							</v-list-tile-content>
 							<v-list-tile-action>
-								<v-btn icon ripple>
+								<v-progress-circular
+									:rotate="360"
+									:size="40"
+									:width="5"
+									:value="props.item.progress"
+									color="teal"
+								>
+									<small>{{ props.item.progress }}</small>
+								</v-progress-circular>
+							</v-list-tile-action>
+							<v-list-tile-action>
+								<v-btn icon ripple @click.prevent="setProject(props.item)">
 									<v-icon color="grey lighten-1">info</v-icon>
 								</v-btn>
 							</v-list-tile-action>
@@ -122,14 +134,25 @@ export default {
       pagination: {
         rowsPerPage: 3
       },
-      sheet: false
+      sheet: false,
+      search: '',
+      typesIcon: ['add', 'person', 'info', 'list']
     }
   },
   computed: {
-    ...mapGetters(['projects', 'loading'])
+    ...mapGetters(['projects', 'loading']),
+    filteredProjects() {
+      return this.projects.filter(project =>
+        project.name.toLowerCase().match(this.search)
+      )
+    }
   },
   methods: {
-    ...mapActions(['addProject']),
+    ...mapActions(['addProject', 'setCurrentProject']),
+    setProject(item) {
+      this.setCurrentProject(item)
+      this.$router.push('/project')
+    },
     onSubmit() {
       const project = {
         name: this.name,

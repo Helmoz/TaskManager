@@ -59,6 +59,12 @@ export default new Router({
       name: 'О проекте • TaskManager',
       component: () => import('../views/About.vue'),
       beforeEnter: auth
+    },
+    {
+      path: '/project',
+      name: 'Проект• TaskManager',
+      component: () => import('../views/Project.vue'),
+      beforeEnter: auth
     }
   ]
 })
