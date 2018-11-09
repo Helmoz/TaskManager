@@ -1,11 +1,13 @@
-using Microsoft.AspNetCore.Builder;
+﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using TaskManager.Infrastructure.UnitOfWork;
+using TaskManager.Infrastructure.Context.ContextFactory;
 using VueCliMiddleware;
 
-namespace AspNetCoreVueStarter
+namespace TaskManager.Web
 {
     public class Startup
     {
@@ -26,6 +28,12 @@ namespace AspNetCoreVueStarter
             {
                 configuration.RootPath = "ClientApp/dist";
             });
+
+            var connectionString = Configuration.GetConnectionString("DefaultConnection");
+
+            services.AddScoped<ITaskManagerDbContextFactory, TaskManagerDbContextFactory>();
+
+            services.AddTransient<IUnitOfWork>(provider => new UnitOfWork(connectionString, provider.GetService<ITaskManagerDbContextFactory>()));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -8,7 +8,7 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from 'vuex'
+import { mapActions } from 'vuex'
 
 import CreateProject from '../components/Projects/CreateProject.vue'
 import ListOfProjects from '../components/Projects/ListOfProjects.vue'
@@ -19,6 +19,12 @@ export default {
     CreateProject,
     ListOfProjects,
     BottomSheet
+  },
+  methods: {
+    ...mapActions(['loadProjects'])
+  },
+  created() {
+    this.loadProjects()
   }
 }
 </script>

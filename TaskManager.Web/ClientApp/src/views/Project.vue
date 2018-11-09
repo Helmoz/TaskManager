@@ -66,7 +66,7 @@
 						<v-layout row wrap="">
 							<v-flex xs12 sm4>
 								<v-text-field
-									v-model="tag"
+									v-model="tag.name"
 									label="Добавить тэг"
 									append-icon="add"
 									@click:append="addTag"
@@ -81,14 +81,14 @@
 							</v-flex>
 							<v-flex xs12 sm7 class="ml-2">
 								<v-item-group multiple>
-									<v-item v-for="chip in chips" :key="chip">
-										<v-chip slot-scope="{ active, toggle }" close @input="remove(chip)"># {{chip}}</v-chip>
+									<v-item v-for="tag in tags" :key="tag.name">
+										<v-chip slot-scope="{ active, toggle }" close @input="remove(tag)"># {{tag.name}}</v-chip>
 									</v-item>
 								</v-item-group>
 							</v-flex>
 						</v-layout>
 					</v-flex>
-					<v-btn class="mt-4" color="success" block depressed>
+					<v-btn class="mt-4" color="success" block depressed @click="saveChanges()">
 						<v-icon class="mr-2">save</v-icon>Сохранить изменения
 					</v-btn>
 				</v-layout>
@@ -118,13 +118,8 @@ export default {
         { name: 'В разработке', type: 1 },
         { name: 'Завершен', type: 2 }
       ],
-      tag: '',
-      chips: [
-        'Programming',
-        'Playing video games',
-        'Watching movies',
-        'Sleeping'
-      ]
+      tag: { name: '' },
+      tags: []
     }
   },
   computed: {
@@ -146,12 +141,28 @@ export default {
     }
   },
   methods: {
+    ...mapActions(['editProject']),
     addTag() {
-      if (this.tag != '' && this.tag.length <= 20) this.chips.push(this.tag)
+      if (this.tag.name != '' && this.tag.name.length <= 20)
+        this.tags.push({ name: this.tag.name })
     },
     remove(item) {
-      this.chips.splice(this.chips.indexOf(item), 1)
-      this.chips = [...this.chips]
+      this.tags.splice(this.tags.indexOf(item), 1)
+      this.tags = [...this.tags]
+    },
+    saveChanges() {
+      var date = new Date(this.deadline)
+      date.setHours(10, 10, 10)
+      const project = {
+        id: this.currentProject.id,
+        name: this.name,
+        description: this.description,
+        progress: this.progress,
+        deadline: date,
+        type: this.type,
+        tags: this.tags
+      }
+      this.editProject(project)
     }
   },
   mounted() {
@@ -159,8 +170,10 @@ export default {
     this.description = this.currentProject.description
     this.progress = this.currentProject.progress
     this.type = this.currentProject.type
-    var a = document.getElementsByClassName('v-input__control')
-    a[4].setAttribute('style', 'width:100%')
+    this.deadline = new Date(this.currentProject.deadline)
+      .toISOString()
+      .substr(0, 10)
+    this.tags = this.currentProject.tags
   },
   created() {}
 }

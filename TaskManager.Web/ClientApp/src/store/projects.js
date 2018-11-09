@@ -1,54 +1,8 @@
+import axios from 'axios'
+
 export default {
   state: {
-    projects: [
-      {
-        name: 'Frozen Yogurt',
-        description: 'Lorem ipsum dolor, sit amet consectetur',
-        icon: 'add',
-        progress: 20,
-        type: 0
-      },
-      {
-        name: 'Ice cream sandwich',
-        description:
-          'Lorem ipsum dolor, sit amet consectetur adipisicing elit. Quod obcaecati',
-        icon: 'person',
-        progress: 40,
-        type: 1
-      },
-      {
-        name: 'Eclair',
-        description:
-          'Lorem ipsum dolor, sit amet consectetur adipisicing elit. Quod obcaecati iure deserunt illo ',
-        icon: 'face',
-        progress: 0,
-        type: 2
-      },
-      {
-        name: 'Cupcake',
-        description:
-          'Lorem ipsum dolor, sit amet consectetur adipisicing elit. Quod obcaecati iure deserunt illo quos',
-        icon: 'check',
-        progress: 7,
-        type: 1
-      },
-      {
-        name: 'Gingerbread',
-        description:
-          'Lorem ipsum dolor, sit amet consectetur adipisicing elit. Quod obcaecati iure deserunt illo quos rerum ',
-        icon: 'info',
-        progress: 85,
-        type: 2
-      },
-      {
-        name: 'Jelly bean',
-        description:
-          'Lorem ipsum dolor, sit amet consectetur adipisicing elit. Quod obcaecati iure deserunt illo quos rerum eveniet nam quidem et cumque.',
-        icon: 'list',
-        progress: 100,
-        type: 0
-      }
-    ],
+    projects: [],
     currentProject: null,
     typeIcons: ['lightbulb_outline', 'build', 'check']
   },
@@ -58,13 +12,46 @@ export default {
     },
     setCurrentProject(state, payload) {
       state.currentProject = payload
+    },
+    setProjects(state, payload) {
+      state.projects = payload
     }
   },
   actions: {
+    async loadProjects({ commit }) {
+      commit('setLoading', true)
+      try {
+        let response = await axios.get('/api/Project/GetProjects/')
+        commit('setProjects', response.data)
+        commit('setLoading', false)
+      } catch (err) {
+        console.log(err)
+        commit('setLoading', false)
+      }
+    },
     async addProject({ commit }, payload) {
       commit('setLoading', true)
-      commit('addProject', payload)
-      commit('setLoading', false)
+      console.log(payload)
+      try {
+        let response = await axios.post('/api/Project/AddProject', payload)
+        commit('addProject', response.data)
+        commit('setLoading', false)
+      } catch (err) {
+        console.log(err)
+        commit('setLoading', false)
+      }
+    },
+    async editProject({ commit }, payload) {
+      commit('setLoading', true)
+      try {
+        console.log(payload)
+        let response = await axios.put('/api/Project/UpdateProject', payload)
+        console.log(response.data)
+        commit('setLoading', false)
+      } catch (err) {
+        console.log(err)
+        commit('setLoading', false)
+      }
     },
     setCurrentProject({ commit }, payload) {
       commit('setCurrentProject', payload)

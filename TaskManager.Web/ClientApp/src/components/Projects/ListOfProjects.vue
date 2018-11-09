@@ -9,7 +9,7 @@
 			content-tag="v-layout"
 			row
 			wrap=""
-			:loading="loading"
+			v-if="!loading"
 		>
 			<v-flex slot="item" slot-scope="props" xs12>
 				<v-list two-line>
@@ -60,13 +60,16 @@ export default {
   computed: {
     ...mapGetters(['projects', 'loading', 'typeIcons']),
     filteredProjects() {
-      return this.projects.filter(project =>
-        project.name.toLowerCase().match(this.search)
-      )
+      return this.projects.filter(project => {
+        return project.name.toLowerCase().match(this.search)
+      })
     }
   },
   methods: {
     ...mapActions(['setCurrentProject']),
+    filter(value, search) {
+      value.name.toLowerCase.mathch(search)
+    },
     setProject(item) {
       this.setCurrentProject(item)
       this.$router.push('/project')

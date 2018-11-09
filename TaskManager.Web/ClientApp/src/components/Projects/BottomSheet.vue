@@ -68,13 +68,16 @@ export default {
   methods: {
     ...mapActions(['addProject']),
     onSubmit() {
+      var date = new Date(Date.now())
+      date.setHours(10, 10, 10)
       const project = {
         name: this.name,
-        description:
-          'Lorem ipsum dolor sit amet consectetur adipisicing elit. Hic, error obcaecati modi facere blanditiis reprehenderit quis?',
-        icon: 'add'
+        description: '....',
+        type: 0,
+        deadline: date
       }
       this.addProject(project)
+      this.name = ''
       this.sheet = false
     }
   }
