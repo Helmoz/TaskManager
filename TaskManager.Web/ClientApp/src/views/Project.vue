@@ -43,14 +43,20 @@
 					</v-flex>
 					<v-flex xs12>
 						<v-layout row wrap="">
-							<v-flex xs8>
+							<v-flex xs12 sm8>
 								<v-subheader class="pl-0">Тип проекта</v-subheader>
 								<v-layout row wrap="">
-									<v-flex xs2 class="mr-3">
-										<v-icon large v-html="icon"></v-icon>
+									<v-flex xs2 class="">
+										<v-icon large v-html="typeIcons[type]"></v-icon>
 									</v-flex>
-									<v-flex xs9>
-										<v-select :items="items" v-model="type" class="pt-0 mt-0"></v-select>
+									<v-flex xs9 sm7>
+										<v-select
+											:items="types"
+											v-model="type"
+											item-value="type"
+											item-text="name"
+											class="pt-0 mt-0"
+										></v-select>
 									</v-flex>
 								</v-layout>
 							</v-flex>
@@ -106,8 +112,12 @@ export default {
       progress: null,
       deadline: null,
       datePicker: false,
-      type: 'Foo',
-      items: ['Foo', 'Bar', 'Fizz', 'Buzz'],
+      type: null,
+      types: [
+        { name: 'Идея', type: 0 },
+        { name: 'В разработке', type: 1 },
+        { name: 'Завершен', type: 2 }
+      ],
       tag: '',
       chips: [
         'Programming',
@@ -118,23 +128,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['currentProject']),
-    icon() {
-      switch (this.type) {
-        case 'Foo':
-          return 'add'
-          break
-        case 'Bar':
-          return 'info'
-          break
-        case 'Fizz':
-          return 'list'
-          break
-        case 'Buzz':
-          return 'check'
-          break
-      }
-    },
+    ...mapGetters(['currentProject', 'typeIcons']),
     tagErrors() {
       const errors = []
       if (!this.$v.tag.$dirty) return errors
@@ -164,6 +158,7 @@ export default {
     this.name = this.currentProject.name
     this.description = this.currentProject.description
     this.progress = this.currentProject.progress
+    this.type = this.currentProject.type
     var a = document.getElementsByClassName('v-input__control')
     a[4].setAttribute('style', 'width:100%')
   },

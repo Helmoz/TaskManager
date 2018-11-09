@@ -30,7 +30,7 @@ export default {
           'Lorem ipsum dolor, sit amet consectetur adipisicing elit. Quod obcaecati iure deserunt illo quos',
         icon: 'check',
         progress: 7,
-        type: 2
+        type: 1
       },
       {
         name: 'Gingerbread',
@@ -38,7 +38,7 @@ export default {
           'Lorem ipsum dolor, sit amet consectetur adipisicing elit. Quod obcaecati iure deserunt illo quos rerum ',
         icon: 'info',
         progress: 85,
-        type: 3
+        type: 2
       },
       {
         name: 'Jelly bean',
@@ -49,7 +49,8 @@ export default {
         type: 0
       }
     ],
-    currentProject: null
+    currentProject: null,
+    typeIcons: ['lightbulb_outline', 'build', 'check']
   },
   mutations: {
     addProject(state, payload) {
@@ -75,6 +76,9 @@ export default {
     },
     currentProject(state) {
       return state.currentProject
+    },
+    typeIcons(state) {
+      return state.typeIcons
     }
   }
 }
