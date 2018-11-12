@@ -43,6 +43,7 @@ namespace TaskManager.Controllers
         {
             var project = _unitOfWork.ProjectRepository
                 .Get(x => x.Id == updatedProject.Id)
+                .Include(x=>x.Tags)
                 .FirstOrDefault();
 
             project.Name = updatedProject.Name;
@@ -52,11 +53,13 @@ namespace TaskManager.Controllers
             project.Type = updatedProject.Type;
 
             project.Progress = updatedProject.Progress;
-
+            
             project.Deadline = updatedProject.Deadline;
+            
+            project.Tags.AddRange(updatedProject.Tags.Where(x => x.Id == 0));
 
-            //project.Tags = updatedProject.Tags;
-
+            project.Tags.RemoveAll(x => !updatedProject.Tags.Contains(x, new TagComparer()));
+            
             _unitOfWork.ProjectRepository.Update(project);
 
             await _unitOfWork.Save();
@@ -67,12 +70,24 @@ namespace TaskManager.Controllers
         [HttpDelete("[action]")]
         public async Task<IActionResult> DeleteProject([FromBody] Project project)
         {
-
             _unitOfWork.ProjectRepository.Delete(project);
 
             await _unitOfWork.Save();
 
             return Ok(project);
+        }
+    }
+
+    public class TagComparer : IEqualityComparer<Tag>
+    {
+        public bool Equals(Tag x, Tag y)
+        {
+            return x.Id == y.Id && x.Name == y.Name;
+        }
+
+        public int GetHashCode(Tag obj)
+        {
+            return (obj.Id * 13 + 29) * 53;
         }
     }
 }

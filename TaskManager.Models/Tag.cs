@@ -1,7 +1,7 @@
 ﻿namespace TaskManager.Models
 {
-    public class Tag: Identity
+    public class Tag : Identity
     {
-        public string Name { get; set; }
+        public string  Name { get; set; }
     }
 }

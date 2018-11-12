@@ -57,7 +57,7 @@ namespace TaskManager.Infrastructure.Migrations
 
                     b.HasIndex("ProjectId");
 
-                    b.ToTable("Tag");
+                    b.ToTable("Tags");
                 });
 
             modelBuilder.Entity("TaskManager.Models.Tag", b =>

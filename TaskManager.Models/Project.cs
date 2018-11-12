@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using System.Linq;
 
 namespace TaskManager.Models
 {
@@ -26,6 +28,6 @@ namespace TaskManager.Models
         public Type Type { get; set; }
 
         public List<Tag> Tags { get; set; }
-
+        
     }
 }

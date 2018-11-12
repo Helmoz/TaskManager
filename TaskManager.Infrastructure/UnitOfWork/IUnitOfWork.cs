@@ -8,6 +8,8 @@ namespace TaskManager.Infrastructure.UnitOfWork
     {
         BaseRepository<Project> ProjectRepository { get; }
 
+        BaseRepository<Tag> TagRepository { get; }
+
         void Dispose();
         Task<int> Save();
     }

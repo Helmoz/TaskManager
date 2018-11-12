@@ -10,7 +10,7 @@ using TaskManager.Infrastructure.Context;
 namespace TaskManager.Infrastructure.Migrations
 {
     [DbContext(typeof(TaskManagerDbContext))]
-    [Migration("20181109192635_Init")]
+    [Migration("20181111161842_Init")]
     partial class Init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -59,7 +59,7 @@ namespace TaskManager.Infrastructure.Migrations
 
                     b.HasIndex("ProjectId");
 
-                    b.ToTable("Tag");
+                    b.ToTable("Tags");
                 });
 
             modelBuilder.Entity("TaskManager.Models.Tag", b =>

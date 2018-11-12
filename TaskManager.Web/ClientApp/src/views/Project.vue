@@ -143,8 +143,9 @@ export default {
   methods: {
     ...mapActions(['editProject']),
     addTag() {
-      if (this.tag.name != '' && this.tag.name.length <= 20)
+      if (this.tag.name != '' && this.tag.name.length <= 20) {
         this.tags.push({ name: this.tag.name })
+      }
     },
     remove(item) {
       this.tags.splice(this.tags.indexOf(item), 1)

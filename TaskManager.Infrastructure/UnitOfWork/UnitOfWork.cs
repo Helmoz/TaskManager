@@ -18,8 +18,13 @@ namespace TaskManager.Infrastructure.UnitOfWork
 
         private BaseRepository<Project> _projectRepository;
 
+        private BaseRepository<Tag> _tagRepository;
+
         public BaseRepository<Project> ProjectRepository =>
             _projectRepository ?? (_projectRepository = new BaseRepository<Project>(_context));
+
+        public BaseRepository<Tag> TagRepository =>
+            _tagRepository ?? (_tagRepository = new BaseRepository<Tag>(_context));
 
         public Task<int> Save() => _context.SaveChangesAsync();
 
