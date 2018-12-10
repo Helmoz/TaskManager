@@ -1,18 +1,18 @@
 <template>
-	<v-container grid-list-xs>
-		<v-layout row wrap="" justify-center>
-			<v-flex xs12 sm8 lg6 xl6>
-				<v-layout row wrap="">
-					<v-flex xs4 lg3 class="user">
-						<img :src="user.photo" alt="" class="user_avatar">
-					</v-flex>
-					<v-flex xs8 lg9 class="user_info">
-						<h2>{{user.name}}</h2>
-					</v-flex>
-				</v-layout>
-			</v-flex>
-		</v-layout>
-	</v-container>
+  <v-container grid-list-xs>
+    <v-layout row wrap justify-center>
+      <v-flex xs12 sm8 lg6 xl6>
+        <v-layout row wrap>
+          <v-flex xs4 lg3 class="user">
+            <img :src="user.photo" alt class="user_avatar">
+          </v-flex>
+          <v-flex xs8 lg9 class="user_info">
+            <h2>{{user.name}}</h2>
+          </v-flex>
+        </v-layout>
+      </v-flex>
+    </v-layout>
+  </v-container>
 </template>
 
 

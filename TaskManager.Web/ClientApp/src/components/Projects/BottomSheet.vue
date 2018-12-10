@@ -1,52 +1,52 @@
 <template>
-	<v-container grid-list-xl class="pb-5" v-if="$vuetify.breakpoint.smAndDown">
-		<v-layout row wrap="" justify-end>
-			<v-flex xs12 class="text-xs-right">
-				<v-bottom-sheet v-model="sheet">
-					<v-btn
-						slot="activator"
-						fixed
-						bottom
-						right
-						color="primary"
-						dark
-						fab
-						style="margin-bottom: 60px"
-					>
-						<v-icon dark>add</v-icon>
-					</v-btn>
-					<v-list>
-						<v-container grid-list-xs>
-							<v-layout row wrap="">
-								<v-flex xs12>
-									<v-form lazy-validation class="text-xs-right">
-										<v-text-field
-											v-model="name"
-											label="Имя проекта"
-											prepend-icon="add"
-											clearable
-											required
-											@input="$v.name.$touch()"
-											@blur="$v.name.$touch()"
-											@keyup.enter="onSubmit"
-										></v-text-field>
-										<v-btn
-											:loading="loading"
-											color="primary"
-											class="mr-0"
-											depressed
-											:disabled="$v.$invalid"
-											@click="onSubmit"
-										>Создать</v-btn>
-									</v-form>
-								</v-flex>
-							</v-layout>
-						</v-container>
-					</v-list>
-				</v-bottom-sheet>
-			</v-flex>
-		</v-layout>
-	</v-container>
+  <v-container grid-list-xl class="pb-5" v-if="$vuetify.breakpoint.smAndDown">
+    <v-layout row wrap justify-end>
+      <v-flex xs12 class="text-xs-right">
+        <v-bottom-sheet v-model="sheet">
+          <v-btn
+            slot="activator"
+            fixed
+            bottom
+            right
+            color="primary"
+            dark
+            fab
+            style="margin-bottom: 60px"
+          >
+            <v-icon dark>add</v-icon>
+          </v-btn>
+          <v-list>
+            <v-container grid-list-xs>
+              <v-layout row wrap>
+                <v-flex xs12>
+                  <v-form lazy-validation class="text-xs-right">
+                    <v-text-field
+                      v-model="name"
+                      label="Имя проекта"
+                      prepend-icon="add"
+                      clearable
+                      required
+                      @input="$v.name.$touch()"
+                      @blur="$v.name.$touch()"
+                      @keyup.enter="onSubmit"
+                    ></v-text-field>
+                    <v-btn
+                      :loading="loading"
+                      color="primary"
+                      class="mr-0"
+                      depressed
+                      :disabled="$v.$invalid"
+                      @click="onSubmit"
+                    >Создать</v-btn>
+                  </v-form>
+                </v-flex>
+              </v-layout>
+            </v-container>
+          </v-list>
+        </v-bottom-sheet>
+      </v-flex>
+    </v-layout>
+  </v-container>
 </template>
 
 <script>
@@ -59,11 +59,12 @@ export default {
   data() {
     return {
       sheet: false,
-      name: ''
+      name: '',
+      member: null
     }
   },
   computed: {
-    ...mapGetters(['loading'])
+    ...mapGetters(['loading', 'user'])
   },
   methods: {
     ...mapActions(['addProject']),
@@ -74,11 +75,18 @@ export default {
         name: this.name,
         description: '....',
         type: 0,
-        deadline: date
+        deadline: date,
+        members: [
+          {
+            Uid: '',
+            Name: this.user.name,
+            PhotoUrl: this.user.photoURL,
+            Email: this.user.email
+          }
+        ]
       }
       this.addProject(project)
       this.name = ''
-      this.sheet = false
     }
   }
 }

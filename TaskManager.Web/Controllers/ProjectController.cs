@@ -22,7 +22,7 @@ namespace TaskManager.Controllers
         [HttpGet("[action]")]
         public async Task<IEnumerable<Project>> GetProjects()
         {
-            return await _unitOfWork.ProjectRepository.Get().Include(x=>x.Tags).ToListAsync();
+            return await _unitOfWork.ProjectRepository.Get().Include(x=>x.Tags).Include(x => x.Members).ToListAsync();
         }
 
         [HttpPost("[action]")]
@@ -30,6 +30,11 @@ namespace TaskManager.Controllers
         {
             if (_unitOfWork.ProjectRepository.Get().Any(x => x.Name == project.Name))
                 return BadRequest(project);
+
+            var creator = _unitOfWork.UserRepository.Get(x => x.Email == project.Members.FirstOrDefault().Email).FirstOrDefault();
+
+            project.Members = new List<User> {creator};
+
 
             _unitOfWork.ProjectRepository.Insert(project);
 
@@ -44,6 +49,7 @@ namespace TaskManager.Controllers
             var project = _unitOfWork.ProjectRepository
                 .Get(x => x.Id == updatedProject.Id)
                 .Include(x=>x.Tags)
+                .Include(x=>x.Members)
                 .FirstOrDefault();
 
             project.Name = updatedProject.Name;
@@ -58,7 +64,21 @@ namespace TaskManager.Controllers
             
             project.Tags.AddRange(updatedProject.Tags.Where(x => x.Id == 0));
 
-            project.Tags.RemoveAll(x => !updatedProject.Tags.Contains(x, new TagComparer()));
+            var removedTags = project.Tags.Where(x => !updatedProject.Tags.Contains(x, new TagComparer())).ToList();
+
+            removedTags.ForEach(x =>
+            {
+                project.Tags.Remove(x);
+                _unitOfWork.TagRepository.Delete(x);
+            });
+
+            var removedMembers = project.Members.Where(x => !updatedProject.Members.Contains(x, new MemberComparer())).ToList();
+
+            removedMembers.ForEach(x => project.Members.Remove(x));
+
+            var newMembers = updatedProject.Members.Where(x => !project.Members.Contains(x, new MemberComparer())).ToList();
+            
+            newMembers.ForEach(x => project.Members.Add(_unitOfWork.UserRepository.Get(y=> y.Id == x.Id).FirstOrDefault()));
             
             _unitOfWork.ProjectRepository.Update(project);
 
@@ -86,6 +106,19 @@ namespace TaskManager.Controllers
         }
 
         public int GetHashCode(Tag obj)
+        {
+            return (obj.Id * 13 + 29) * 53;
+        }
+    }
+
+    public class MemberComparer : IEqualityComparer<User>
+    {
+        public bool Equals(User x, User y)
+        {
+            return x.Id == y.Id && x.Name == y.Name;
+        }
+
+        public int GetHashCode(User obj)
         {
             return (obj.Id * 13 + 29) * 53;
         }

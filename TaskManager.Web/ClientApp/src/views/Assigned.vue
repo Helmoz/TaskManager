@@ -1,5 +1,5 @@
 <template>
-	<v-container>Assigned</v-container>
+  <v-container>Assigned</v-container>
 </template>
 
 <script>

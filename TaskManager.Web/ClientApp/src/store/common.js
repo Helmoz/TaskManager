@@ -33,8 +33,7 @@ export default {
         errorMessage =
           'Пользователь с таким e-mail не найден. Проверьте e-mail и повторите попытку.'
       if (payload.code === 'auth/wrong-password')
-        errorMessage =
-          'К сожалению, вы ввели неверный пароль. Проверьте пароль еще раз.'
+        errorMessage = 'К сожалению, вы ввели неверный пароль. Проверьте пароль еще раз.'
       if (payload.code === 'auth/email-already-in-use')
         errorMessage = 'Этот e-mail уже используется другой учетной записью'
 

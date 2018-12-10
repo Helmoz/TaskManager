@@ -10,6 +10,8 @@ namespace TaskManager.Infrastructure.UnitOfWork
 
         BaseRepository<Tag> TagRepository { get; }
 
+        BaseRepository<User> UserRepository { get; }
+
         void Dispose();
         Task<int> Save();
     }

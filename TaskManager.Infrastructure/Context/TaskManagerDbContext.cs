@@ -12,5 +12,7 @@ namespace TaskManager.Infrastructure.Context
         public DbSet<Project> Projects { get; set; }
 
         public DbSet<Tag> Tags { get; set; }
+
+        public DbSet<User> Users { get; set; }
     }
 }

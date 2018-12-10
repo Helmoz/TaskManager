@@ -28,6 +28,8 @@ namespace TaskManager.Models
         public Type Type { get; set; }
 
         public List<Tag> Tags { get; set; }
+
+        public List<User> Members { get; set; }
         
     }
 }

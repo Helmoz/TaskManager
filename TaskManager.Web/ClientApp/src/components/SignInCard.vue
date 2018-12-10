@@ -1,54 +1,54 @@
 <template>
-	<div>
-		<v-card flat class="card">
-			<v-container class="card_container">
-				<v-layout row wrap="" justify-center>
-					<v-flex xs12>
-						<h1 class="text-xs-center card_header">TaskManager</h1>
-						<v-form ref="form" lazy-validation class="login_form">
-							<v-text-field
-								v-model="email"
-								label="E-mail"
-								:error-messages="emailErrors"
-								@input="$v.email.$touch()"
-								@blur="$v.email.$touch()"
-								required
-								outline
-								@keyup.enter="onSubmit"
-							></v-text-field>
-							<v-text-field
-								outline
-								v-model="password"
-								:append-icon="showPassword ? 'visibility_off' : 'visibility'"
-								:type="showPassword ? 'text' : 'password'"
-								label="Пароль"
-								:error-messages="passwordErrors"
-								@input="$v.password.$touch()"
-								@blur="$v.password.$touch()"
-								required
-								@keyup.enter="onSubmit"
-								@click:append="showPassword = !showPassword"
-							></v-text-field>
-							<v-btn
-								:loading="loading"
-								color="primary"
-								block
-								:disabled="$v.$invalid"
-								@click="onSubmit"
-							>Войти</v-btn>
-							<div v-if="error" class="login_error">
-								<v-divider></v-divider>
-								<p class="login_error_message">{{error}}</p>
-							</div>
-						</v-form>
-					</v-flex>
-				</v-layout>
-			</v-container>
-		</v-card>
-		<v-card flat style="margin-top: 10px" class="card card_register">Ещё нет аккаунта?
-			<router-link to="/registration" style="cursor: pointer">Зарегистрируйтесь</router-link>
-		</v-card>
-	</div>
+  <div>
+    <v-card flat class="card">
+      <v-container class="card_container">
+        <v-layout row wrap justify-center>
+          <v-flex xs12>
+            <h1 class="text-xs-center card_header">TaskManager</h1>
+            <v-form ref="form" lazy-validation class="login_form">
+              <v-text-field
+                v-model="email"
+                label="E-mail"
+                :error-messages="emailErrors"
+                @input="$v.email.$touch()"
+                @blur="$v.email.$touch()"
+                required
+                outline
+                @keyup.enter="onSubmit"
+              ></v-text-field>
+              <v-text-field
+                outline
+                v-model="password"
+                :append-icon="showPassword ? 'visibility_off' : 'visibility'"
+                :type="showPassword ? 'text' : 'password'"
+                label="Пароль"
+                :error-messages="passwordErrors"
+                @input="$v.password.$touch()"
+                @blur="$v.password.$touch()"
+                required
+                @keyup.enter="onSubmit"
+                @click:append="showPassword = !showPassword"
+              ></v-text-field>
+              <v-btn
+                :loading="loading"
+                color="primary"
+                block
+                :disabled="$v.$invalid"
+                @click="onSubmit"
+              >Войти</v-btn>
+              <div v-if="error" class="login_error">
+                <v-divider></v-divider>
+                <p class="login_error_message">{{error}}</p>
+              </div>
+            </v-form>
+          </v-flex>
+        </v-layout>
+      </v-container>
+    </v-card>
+    <v-card flat style="margin-top: 10px" class="card card_register">Ещё нет аккаунта?
+      <router-link to="/registration" style="cursor: pointer">Зарегистрируйтесь</router-link>
+    </v-card>
+  </div>
 </template>
 
 <script>
@@ -72,19 +72,15 @@ export default {
     passwordErrors() {
       const errors = []
       if (!this.$v.password.$dirty) return errors
-      !this.$v.password.minLength &&
-        errors.push('Введите пароль минимум из 8 симоволов')
-      !this.$v.password.required &&
-        errors.push('Это поле обязательно к заполнению.')
+      !this.$v.password.minLength && errors.push('Введите пароль минимум из 8 симоволов')
+      !this.$v.password.required && errors.push('Это поле обязательно к заполнению.')
       return errors
     },
     emailErrors() {
       const errors = []
       if (!this.$v.email.$dirty) return errors
-      !this.$v.email.email &&
-        errors.push('Введите корректный электронный адрес.')
-      !this.$v.email.required &&
-        errors.push('Это поле обязательно к заполнению.')
+      !this.$v.email.email && errors.push('Введите корректный электронный адрес.')
+      !this.$v.email.required && errors.push('Это поле обязательно к заполнению.')
       return errors
     }
   },

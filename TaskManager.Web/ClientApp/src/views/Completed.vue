@@ -1,5 +1,5 @@
 <template>
-	<v-container>Completed</v-container>
+  <v-container>Completed</v-container>
 </template>
 
 <script>

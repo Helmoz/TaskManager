@@ -31,7 +31,6 @@ export default {
     },
     async addProject({ commit }, payload) {
       commit('setLoading', true)
-      console.log(payload)
       try {
         let response = await axios.post('/api/Project/AddProject', payload)
         commit('addProject', response.data)
@@ -44,9 +43,7 @@ export default {
     async editProject({ commit }, payload) {
       commit('setLoading', true)
       try {
-        console.log(payload)
         let response = await axios.put('/api/Project/UpdateProject', payload)
-        console.log(response.data)
         commit('setLoading', false)
       } catch (err) {
         console.log(err)

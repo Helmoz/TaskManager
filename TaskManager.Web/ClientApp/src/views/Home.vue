@@ -1,10 +1,10 @@
 <template>
-	<v-container grid-list-xs class="pr-0 pl-0">
-		<CreateProject></CreateProject>
-		<v-divider v-if="$vuetify.breakpoint.mdAndUp"></v-divider>
-		<ListOfProjects></ListOfProjects>
-		<BottomSheet></BottomSheet>
-	</v-container>
+  <v-container grid-list-xs class="pr-0 pl-0">
+    <CreateProject></CreateProject>
+    <v-divider v-if="$vuetify.breakpoint.mdAndUp"></v-divider>
+    <ListOfProjects></ListOfProjects>
+    <BottomSheet></BottomSheet>
+  </v-container>
 </template>
 
 <script>

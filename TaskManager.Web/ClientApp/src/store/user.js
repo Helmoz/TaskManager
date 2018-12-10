@@ -2,13 +2,19 @@ import firebase from 'firebase/app'
 
 import User from './helpers/user_help'
 
+import axios from 'axios'
+
 export default {
   state: {
-    user: null
+    user: null,
+    userByEmail: null
   },
   mutations: {
     setUser(state, payload) {
       state.user = payload
+    },
+    setUserByEmail(state, payload) {
+      state.userByEmail = payload
     }
   },
   actions: {
@@ -16,17 +22,10 @@ export default {
       commit('clearError')
       commit('setLoading', true)
       try {
-        const user = await firebase
-          .auth()
-          .signInWithEmailAndPassword(email, password)
+        const user = await firebase.auth().signInWithEmailAndPassword(email, password)
         commit(
           'setUser',
-          new User(
-            user.user.uid,
-            user.user.email,
-            user.user.displayName,
-            user.user.photoURL
-          )
+          new User(user.user.uid, user.user.email, user.user.displayName, user.user.photoURL)
         )
         commit('setLoading', false)
       } catch (error) {
@@ -41,12 +40,11 @@ export default {
       try {
         await firebase.auth().createUserWithEmailAndPassword(email, password)
 
-        var currentUser = firebase.auth().currentUser
+        var currentUser = await firebase.auth().currentUser
 
-        currentUser.updateProfile({
+        await currentUser.updateProfile({
           displayName: name,
-          photoURL:
-            'https://www0.sun.ac.za/chemistry/images/0/0b/Blank_avatar.jpeg'
+          photoURL: 'https://zcoin.io/wp-content/uploads/2017/01/blank-avatar-300x300.png'
         })
 
         commit(
@@ -66,15 +64,50 @@ export default {
         throw error
       }
     },
+    async addUser({ commit, dispatch }, payload) {
+      commit('setLoading', true)
+      try {
+        await axios.post('/api/User/AddUser', {
+          UId: payload.id,
+          Name: payload.name,
+          PhotoUrl: payload.photo,
+          Email: payload.email
+        })
+      } catch (err) {
+        console.log(err)
+        commit('setLoading', false)
+      }
+    },
+    async addMemberToProject({ commit }, payload) {
+      commit('setLoading', true)
+      try {
+        let response = await axios.put(
+          '/api/Project/AddMemberToProject/' + payload.project.id + '/' + payload.member.id
+        )
+        console.log(response)
+        commit('setLoading', false)
+      } catch (err) {
+        console.log(err)
+        commit('setLoading', false)
+      }
+    },
+    async loadUserByEmail({ commit }, payload) {
+      commit('setLoading', true)
+      try {
+        var user = await axios.get('/api/User/GetUserByEmail/' + payload)
+        commit('setLoading', false)
+        return user
+      } catch (err) {
+        console.log(err)
+        commit('setLoading', false)
+      }
+    },
     authCheck({ state, commit }) {
       return new Promise((resolve, reject) => {
         firebase.auth().onAuthStateChanged(
           user => {
             if (user) {
-              commit(
-                'setUser',
-                new User(user.uid, user.email, user.displayName, user.photoURL)
-              )
+              commit('setUser', new User(user.uid, user.email, user.displayName, user.photoURL))
             }
             resolve(state.user)
           },
