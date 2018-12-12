@@ -16,7 +16,7 @@
           ></v-text-field>
           <v-autocomplete
             v-model="chips"
-            :items="items"
+            :items="currentProject.members"
             chips
             prepend-icon="face"
             label="Задачи для"
@@ -28,10 +28,10 @@
                 :selected="data.selected"
                 close
                 class="chip--select-multi"
-                @input="remove(data.item)"
+                @input="removeAssigned(data.item)"
               >
                 <v-avatar>
-                  <img :src="data.item.avatar">
+                  <img :src="data.item.photoUrl">
                 </v-avatar>
                 {{ data.item.name }}
               </v-chip>
@@ -42,7 +42,7 @@
               </template>
               <template v-else>
                 <v-list-tile-avatar>
-                  <img :src="data.item.avatar">
+                  <img :src="data.item.photoUrl">
                 </v-list-tile-avatar>
                 <v-list-tile-content>
                   <v-list-tile-title v-html="data.item.name"></v-list-tile-title>
@@ -157,7 +157,7 @@ export default {
       },
       search: '',
       name: '',
-      chips: [],
+      assign: [],
       items: [
         {
           name: 'Foo',
@@ -176,15 +176,15 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['projects', 'loading', 'typeIcons'])
+    ...mapGetters([, 'loading', 'currentProject'])
   },
   methods: {
-    ...mapActions(['setCurrentProject', 'addProject']),
-    remove(item) {
-      this.chips.splice(this.chips.indexOf(item), 1)
-      this.chips = [...this.chips]
-    },
+    ...mapActions([]),
     onSubmit() {},
+    removeAssigned(member) {
+      this.assign.splice(this.assign.indexOf(member), 1)
+      this.assign = [...this.assign]
+    },
     test() {
       console.log(this.$refs['itemGroup'].selectedItems.map(x => x.value))
     }

@@ -1,24 +1,21 @@
 <template>
   <v-container grid-list-xs class="pr-0 pl-0">
-    <CreateProject></CreateProject>
+    <create-project></create-project>
     <v-divider v-if="$vuetify.breakpoint.mdAndUp"></v-divider>
-    <ListOfProjects></ListOfProjects>
-    <BottomSheet></BottomSheet>
+    <list-of-projects></list-of-projects>
   </v-container>
 </template>
 
 <script>
 import { mapActions } from 'vuex'
 
-import CreateProject from '../components/Projects/CreateProject.vue'
-import ListOfProjects from '../components/Projects/ListOfProjects.vue'
-import BottomSheet from '../components/Projects/BottomSheet.vue'
+import CreateProject from '../components/Home/CreateProject.vue'
+import ListOfProjects from '../components/Home/ListOfProjects.vue'
 
 export default {
   components: {
     CreateProject,
-    ListOfProjects,
-    BottomSheet
+    ListOfProjects
   },
   methods: {
     ...mapActions(['loadProjects'])

@@ -78,25 +78,12 @@ export default {
         commit('setLoading', false)
       }
     },
-    async addMemberToProject({ commit }, payload) {
+    async loadMemberByEmail({ commit }, payload) {
       commit('setLoading', true)
       try {
-        let response = await axios.put(
-          '/api/Project/AddMemberToProject/' + payload.project.id + '/' + payload.member.id
-        )
-        console.log(response)
+        var member = await axios.get('/api/User/GetUserByEmail/' + payload)
         commit('setLoading', false)
-      } catch (err) {
-        console.log(err)
-        commit('setLoading', false)
-      }
-    },
-    async loadUserByEmail({ commit }, payload) {
-      commit('setLoading', true)
-      try {
-        var user = await axios.get('/api/User/GetUserByEmail/' + payload)
-        commit('setLoading', false)
-        return user
+        return member
       } catch (err) {
         console.log(err)
         commit('setLoading', false)

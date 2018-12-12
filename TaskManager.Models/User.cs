@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace TaskManager.Models
+﻿namespace TaskManager.Models
 {
     public class User : Identity
     {

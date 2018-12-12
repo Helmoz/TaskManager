@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
@@ -40,7 +39,7 @@ namespace TaskManager.Controllers
 
             await _unitOfWork.Save();
 
-            return Ok(_unitOfWork.ProjectRepository.Get(x=>x.Id == project.Id).Include(x=>x.Tags).FirstOrDefault());
+            return Ok(_unitOfWork.ProjectRepository.Get(x=>x.Id == project.Id).Include(x=>x.Tags).Include(x=>x.Members).FirstOrDefault());
         }
 
         [HttpPut("[action]")]
@@ -84,7 +83,7 @@ namespace TaskManager.Controllers
 
             await _unitOfWork.Save();
             
-            return Ok(project);
+            return Ok(_unitOfWork.ProjectRepository.Get(x=>x.Id == project.Id).Include(x=>x.Tags).Include(x=>x.Members).FirstOrDefault());
         }
 
         [HttpDelete("[action]")]

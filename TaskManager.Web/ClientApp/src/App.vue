@@ -1,6 +1,6 @@
 <template>
   <v-app>
-    <SideNavigation v-if="user"></SideNavigation>
+    <side-navigation v-if="user"></side-navigation>
     <v-bottom-nav color="primary" fixed :value="!mdAndUp" shift>
       <v-btn dark :to="`/`" exact>
         <span>Проекты</span>
@@ -11,7 +11,7 @@
         <v-icon v-html="item.icon"></v-icon>
       </v-btn>
     </v-bottom-nav>
-    <v-toolbar color="secondary" dark :extended="mdAndUp" flat v-if="user">
+    <v-toolbar color="secondary" fixed dark :extended="mdAndUp" flat v-if="user">
       <v-toolbar-title class="hidden-md-and-up">
         <router-link to="/" tag="span" style="cursor: pointer" class="logo">TaskManager</router-link>
       </v-toolbar-title>
@@ -102,6 +102,7 @@ export default {
 	opacity 0
 
 .card--flex-toolbar
-	margin-top -64px
+	margin-top 64px
+	z-index 5
 </style>
 

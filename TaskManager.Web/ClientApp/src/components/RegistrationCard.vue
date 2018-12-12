@@ -117,7 +117,9 @@ export default {
             this.addUser(this.user)
             this.$router.push('/')
           })
-          .catch(err => {})
+          .catch(err => {
+            console.log(err)
+          })
       }
     }
   }

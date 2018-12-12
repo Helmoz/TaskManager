@@ -44,10 +44,13 @@ export default {
       commit('setLoading', true)
       try {
         let response = await axios.put('/api/Project/UpdateProject', payload)
+        commit('setCurrentProject', response.data)
         commit('setLoading', false)
+        return true
       } catch (err) {
         console.log(err)
         commit('setLoading', false)
+        return false
       }
     },
     setCurrentProject({ commit }, payload) {

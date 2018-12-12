@@ -3,11 +3,10 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using TaskManager.Infrastructure.UnitOfWork;
 using TaskManager.Infrastructure.Context.ContextFactory;
-using VueCliMiddleware;
+using TaskManager.Infrastructure.UnitOfWork;
 
-namespace TaskManager.Web
+namespace TaskManager
 {
     public class Startup
     {
