@@ -21,7 +21,7 @@ namespace TaskManager.Controllers
         [HttpGet("[action]")]
         public async Task<IEnumerable<Project>> GetProjects()
         {
-            return await _unitOfWork.ProjectRepository.Get().Include(x=>x.Tags).Include(x => x.Members).ToListAsync();
+            return await _unitOfWork.ProjectRepository.Get().Include(x=>x.Tags).Include(x => x.Members).Include(x=>x.Tasks).ToListAsync();
         }
 
         [HttpPost("[action]")]
@@ -39,7 +39,7 @@ namespace TaskManager.Controllers
 
             await _unitOfWork.Save();
 
-            return Ok(_unitOfWork.ProjectRepository.Get(x=>x.Id == project.Id).Include(x=>x.Tags).Include(x=>x.Members).FirstOrDefault());
+            return Ok(_unitOfWork.ProjectRepository.Get(x=>x.Id == project.Id).Include(x=>x.Tags).Include(x=>x.Members).Include(x => x.Tasks).FirstOrDefault());
         }
 
         [HttpPut("[action]")]
@@ -49,6 +49,7 @@ namespace TaskManager.Controllers
                 .Get(x => x.Id == updatedProject.Id)
                 .Include(x=>x.Tags)
                 .Include(x=>x.Members)
+                .Include(x => x.Tasks)
                 .FirstOrDefault();
 
             project.Name = updatedProject.Name;
@@ -83,7 +84,7 @@ namespace TaskManager.Controllers
 
             await _unitOfWork.Save();
             
-            return Ok(_unitOfWork.ProjectRepository.Get(x=>x.Id == project.Id).Include(x=>x.Tags).Include(x=>x.Members).FirstOrDefault());
+            return Ok(_unitOfWork.ProjectRepository.Get(x=>x.Id == project.Id).Include(x=>x.Tags).Include(x=>x.Members).Include(x => x.Tasks).FirstOrDefault());
         }
 
         [HttpDelete("[action]")]

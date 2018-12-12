@@ -1,6 +1,37 @@
 <template>
-  <v-container grid-list-xs class="pr-0 pl-0">
-    <v-layout row wrap class="pr-4 pl-4 mb-4" v-if="$vuetify.breakpoint.mdAndUp">
+  <v-container grid-list-xs class="pr-0 pl-0 pt-0">
+    <v-layout row wrap class="pl-4 pr-4 pb-4 pt-4 grey lighten-3">
+      <v-flex xs12>
+        <v-list-tile>
+          <v-list-tile-avatar>
+            <v-icon v-html="typeIcons[currentProject.type]"></v-icon>
+          </v-list-tile-avatar>
+          <v-list-tile-content>
+            <v-list-tile-title>{{currentProject.name }}</v-list-tile-title>
+            <v-list-tile-sub-title>{{currentProject.description}}</v-list-tile-sub-title>
+          </v-list-tile-content>
+          <v-list-tile-action v-if="currentProject.type===1">
+            <v-progress-circular
+              :rotate="360"
+              :size="40"
+              :width="5"
+              :value="currentProject.progress"
+              color="teal"
+            >
+              <small>{{ currentProject.progress }}</small>
+            </v-progress-circular>
+          </v-list-tile-action>
+          <v-list-tile-action class="ml-4">
+            <v-chip color="primary" text-color="white">
+              <v-avatar class="secondary">{{currentProject.tasks.length}}</v-avatar>
+              {{getNumEnding}}
+            </v-chip>
+          </v-list-tile-action>
+        </v-list-tile>
+      </v-flex>
+    </v-layout>
+    <v-divider v-if="$vuetify.breakpoint.mdAndUp"></v-divider>
+    <v-layout row wrap class="pl-4 pr-4 pb-4 pt-4" v-if="$vuetify.breakpoint.mdAndUp">
       <v-flex xs12>
         <v-form lazy-validation class="text-xs-right">
           <v-text-field
@@ -15,7 +46,7 @@
             @keyup.enter="onSubmit"
           ></v-text-field>
           <v-autocomplete
-            v-model="chips"
+            v-model="assign"
             :items="currentProject.members"
             chips
             prepend-icon="face"
@@ -55,9 +86,15 @@
           </v-flex>
 
           <v-item-group multiple class="text-xs-left mt-2" ref="itemGroup">
-            <v-item v-for="tag in tags" :key="tag.name" active-class="primary" :value="tag">
+            <v-item
+              v-for="tag in currentProject.tags"
+              :key="tag.name"
+              active-class="primary"
+              :value="tag"
+            >
               <v-chip
                 small
+                disabled
                 slot-scope="{ active, toggle }"
                 :selected="active"
                 @click="toggle"
@@ -72,6 +109,7 @@
             >
               <v-chip
                 small
+                disabled
                 slot-scope="{ active, toggle }"
                 :selected="active"
                 @click="toggle"
@@ -168,15 +206,31 @@ export default {
           avatar: 'https://cdn.vuetifyjs.com/images/lists/2.jpg'
         }
       ],
-      tags: [{ name: 'werwrwew' }, { name: 'losdfsdsfl' }],
-      specialTags: [
-        { name: 'Priority', activeColor: 'error', icon: 'warning' },
-        { name: 'Suggestion', activeColor: 'accent', icon: 'info' }
-      ]
+      specialTags: [{ name: 'Priority', activeColor: 'error', icon: 'warning' }, { name: 'Suggestion', activeColor: 'accent', icon: 'info' }]
     }
   },
   computed: {
-    ...mapGetters([, 'loading', 'currentProject'])
+    ...mapGetters([, 'loading', 'currentProject', 'typeIcons']),
+    getNumEnding() {
+      var words = ['Задача', 'Задачи', 'Задач']
+      var count = this.currentProject.tasks.length % 100
+      if (count >= 11 && count <= 19) {
+        return words[2]
+      } else {
+        switch (count % 10) {
+          case 1:
+            return words[0]
+            break
+          case 2:
+          case 3:
+          case 4:
+            return words[1]
+            break
+          default:
+            return words[2]
+        }
+      }
+    }
   },
   methods: {
     ...mapActions([]),

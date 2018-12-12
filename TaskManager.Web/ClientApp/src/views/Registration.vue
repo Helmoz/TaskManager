@@ -9,7 +9,7 @@
 </template>
 
 <script>
-import RegistrationCard from '../components/RegistrationCard.vue'
+import RegistrationCard from '../components/Authentication/RegistrationCard.vue'
 export default {
   data() {
     return {}

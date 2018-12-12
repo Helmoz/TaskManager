@@ -9,7 +9,7 @@
 </template>
 
 <script>
-import SignInCard from '../components/SignInCard.vue'
+import SignInCard from '../components/Authentication/SignInCard.vue'
 export default {
   data() {
     return {}

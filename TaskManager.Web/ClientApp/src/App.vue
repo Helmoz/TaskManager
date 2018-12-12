@@ -36,7 +36,7 @@
         </v-layout>
       </v-container>
       <!-- MdAndDown -->
-      <v-container grid-list-xs v-else-if="user">
+      <v-container style="margin-top: 56px" grid-list-xs v-else-if="user">
         <v-layout row wrap justify-center>
           <v-flex xs12>
             <transition name="slide-fade" mode="out-in">

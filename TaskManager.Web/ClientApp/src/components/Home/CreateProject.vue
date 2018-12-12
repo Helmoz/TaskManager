@@ -1,6 +1,9 @@
 <template>
-  <div>
-    <v-layout row wrap class="pr-4 pl-4 mb-4" v-if="$vuetify.breakpoint.mdAndUp">
+  <v-container
+    class="pl-0 pr-0 pb-0 pt-0"
+    :style="{height: $vuetify.breakpoint.mdAndUp ? '100%' : '0px'}"
+  >
+    <v-layout row wrap v-if="$vuetify.breakpoint.mdAndUp" class="pl-4 pr-4 pb-4 pt-4">
       <v-flex xs12>
         <v-form lazy-validation class="text-xs-right">
           <v-text-field
@@ -66,7 +69,7 @@
         </v-container>
       </v-list>
     </v-bottom-sheet>
-  </div>
+  </v-container>
 </template>
 
 <script>

@@ -19,7 +19,9 @@
         </v-layout>
       </v-flex>
     </v-layout>
-    <v-snackbar v-model="snackbar" color="success" timeout="3000">Проект успешно обновлен
+    <v-snackbar v-model="snackbar" color="success" :timeout="3000">
+      <v-icon dark class="mr-2">info</v-icon>
+      <span>Проект успешно обновлен</span>
       <v-btn dark flat @click="snackbar = false">
         <v-icon>close</v-icon>
       </v-btn>
@@ -64,7 +66,7 @@ export default {
         this.currentProject.type = 2
       }
       if (this.currentProject.name !== '' && this.currentProject.name.length <= 80) {
-        this.editProject(this.currentProject).then(x => (this.snackbar = x))
+        this.editProject(this.currentProject).then(response => (this.snackbar = response))
       }
     }
   }

@@ -23,7 +23,12 @@
             v-on:enter="MembersEnter"
             v-on:leave="MembersLeave"
           >
-            <v-list-tile @click="setProjectToTasks(props.item)" ripple :key="props.item.name">
+            <v-list-tile
+              @click="setProjectToTasks(props.item)"
+              ripple
+              :key="props.item.name"
+              :to="`/tasks`"
+            >
               <v-list-tile-avatar>
                 <v-icon v-html="typeIcons[props.item.type]"></v-icon>
               </v-list-tile-avatar>
@@ -37,7 +42,7 @@
                   :size="40"
                   :width="5"
                   :value="props.item.progress"
-                  color="teal"
+                  color="primary"
                 >
                   <small>{{ props.item.progress }}</small>
                 </v-progress-circular>
@@ -95,7 +100,6 @@ export default {
     },
     setProjectToTasks(item) {
       this.setCurrentProject(item)
-      //this.$router.push('/tasks')
     }
   }
 }

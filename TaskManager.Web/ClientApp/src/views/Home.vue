@@ -1,5 +1,5 @@
 <template>
-  <v-container grid-list-xs class="pr-0 pl-0">
+  <v-container grid-list-xs class="pr-0 pl-0 pt-0">
     <create-project></create-project>
     <v-divider v-if="$vuetify.breakpoint.mdAndUp"></v-divider>
     <list-of-projects></list-of-projects>
