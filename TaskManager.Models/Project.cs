@@ -25,9 +25,9 @@ namespace TaskManager.Models
         [Required]
         public Type Type { get; set; }
 
-        public List<Tag> Tags { get; set; }
+        public List<ProjectTag> Tags { get; set; }
 
-        public List<User> Members { get; set; }
+        public List<ProjectMember> Members { get; set; }
 
         public List<Task> Tasks { get; set; }
     }

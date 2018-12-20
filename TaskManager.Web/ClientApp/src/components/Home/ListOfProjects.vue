@@ -75,7 +75,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['projects', 'loading', 'typeIcons']),
+    ...mapGetters(['projects', 'loading', 'typeIcons', 'user']),
     filteredProjects() {
       return this.projects.filter(project => {
         return project.name.toLowerCase().indexOf(this.search.toLowerCase()) !== -1
@@ -87,6 +87,15 @@ export default {
     setProject(item) {
       this.setCurrentProject(item)
       this.$router.push('/project')
+    },
+    filter(item) {
+      let task = []
+      item.tasks.forEach(el => {
+        el.assignedTo.forEach(elemenet => {
+          if (elemenet.member.uId == this.user.id) task.push(el)
+        })
+      })
+      return task.length
     },
     beforeEnter: function(el) {
       el.style.opacity = 0

@@ -43,7 +43,7 @@
         <v-list-tile v-for="(item, index) in mainMenu" :key="item.title" avatar :to="item.link">
           <v-list-tile-avatar>
             <v-badge overlap color="primary" v-if="index === 1">
-              <span slot="badge">0</span>
+              <span slot="badge">{{currentProject ? currentProject.assignedToCurrent.length : 0}}</span>
               <v-icon v-html="item.icon"></v-icon>
             </v-badge>
             <v-icon v-else v-html="item.icon"></v-icon>
@@ -78,7 +78,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['user', 'subMenu', 'mainMenu'])
+    ...mapGetters(['user', 'subMenu', 'mainMenu', 'currentProject'])
   },
   methods: {
     ...mapActions(['signOut']),

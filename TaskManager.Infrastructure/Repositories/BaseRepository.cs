@@ -34,7 +34,10 @@ namespace TaskManager.Infrastructure.Repositories
         }
 
         public virtual void Update(TEntity entityToUpdate) =>
-            _context.Attach(entityToUpdate).State = EntityState.Modified;
+            _context.Update(entityToUpdate);
+
+        public virtual void SetNull(TEntity entity, string propertyName) =>
+            _context.Entry(entity).Property(propertyName).CurrentValue = null;
 
         public virtual void Delete(TEntity entityToDelete) => _dbSet.Remove(entityToDelete);
 

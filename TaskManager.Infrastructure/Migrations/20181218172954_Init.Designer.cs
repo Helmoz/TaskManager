@@ -10,8 +10,8 @@ using TaskManager.Infrastructure.Context;
 namespace TaskManager.Infrastructure.Migrations
 {
     [DbContext(typeof(TaskManagerDbContext))]
-    [Migration("20181212205936_AddTasks")]
-    partial class AddTasks
+    [Migration("20181218172954_Init")]
+    partial class Init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -45,6 +45,44 @@ namespace TaskManager.Infrastructure.Migrations
                     b.ToTable("Projects");
                 });
 
+            modelBuilder.Entity("TaskManager.Models.ProjectMember", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int?>("MemberId");
+
+                    b.Property<int?>("ProjectId");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("MemberId");
+
+                    b.HasIndex("ProjectId");
+
+                    b.ToTable("ProjectMembers");
+                });
+
+            modelBuilder.Entity("TaskManager.Models.ProjectTag", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int?>("ProjectId");
+
+                    b.Property<int?>("TagId");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProjectId");
+
+                    b.HasIndex("TagId");
+
+                    b.ToTable("ProjectTags");
+                });
+
             modelBuilder.Entity("TaskManager.Models.Tag", b =>
                 {
                     b.Property<int>("Id")
@@ -53,15 +91,7 @@ namespace TaskManager.Infrastructure.Migrations
 
                     b.Property<string>("Name");
 
-                    b.Property<int?>("ProjectId");
-
-                    b.Property<int?>("TaskId");
-
                     b.HasKey("Id");
-
-                    b.HasIndex("ProjectId");
-
-                    b.HasIndex("TaskId");
 
                     b.ToTable("Tags");
                 });
@@ -89,7 +119,7 @@ namespace TaskManager.Infrastructure.Migrations
                         .IsRequired()
                         .HasMaxLength(80);
 
-                    b.Property<int?>("ProjectId");
+                    b.Property<int>("ProjectId");
 
                     b.HasKey("Id");
 
@@ -99,7 +129,45 @@ namespace TaskManager.Infrastructure.Migrations
 
                     b.HasIndex("ProjectId");
 
-                    b.ToTable("Task");
+                    b.ToTable("Tasks");
+                });
+
+            modelBuilder.Entity("TaskManager.Models.TaskMember", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int?>("MemberId");
+
+                    b.Property<int?>("TaskId");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("MemberId");
+
+                    b.HasIndex("TaskId");
+
+                    b.ToTable("TaskMembers");
+                });
+
+            modelBuilder.Entity("TaskManager.Models.TaskTag", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int?>("TagId");
+
+                    b.Property<int?>("TaskId");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("TagId");
+
+                    b.HasIndex("TaskId");
+
+                    b.ToTable("TaskTags");
                 });
 
             modelBuilder.Entity("TaskManager.Models.User", b =>
@@ -114,30 +182,33 @@ namespace TaskManager.Infrastructure.Migrations
 
                     b.Property<string>("PhotoUrl");
 
-                    b.Property<int?>("ProjectId");
-
-                    b.Property<int?>("TaskId");
-
                     b.Property<string>("UId");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ProjectId");
-
-                    b.HasIndex("TaskId");
-
                     b.ToTable("Users");
                 });
 
-            modelBuilder.Entity("TaskManager.Models.Tag", b =>
+            modelBuilder.Entity("TaskManager.Models.ProjectMember", b =>
                 {
-                    b.HasOne("TaskManager.Models.Project")
+                    b.HasOne("TaskManager.Models.User", "Member")
+                        .WithMany()
+                        .HasForeignKey("MemberId");
+
+                    b.HasOne("TaskManager.Models.Project", "Project")
+                        .WithMany("Members")
+                        .HasForeignKey("ProjectId");
+                });
+
+            modelBuilder.Entity("TaskManager.Models.ProjectTag", b =>
+                {
+                    b.HasOne("TaskManager.Models.Project", "Project")
                         .WithMany("Tags")
                         .HasForeignKey("ProjectId");
 
-                    b.HasOne("TaskManager.Models.Task")
-                        .WithMany("Tags")
-                        .HasForeignKey("TaskId");
+                    b.HasOne("TaskManager.Models.Tag", "Tag")
+                        .WithMany()
+                        .HasForeignKey("TagId");
                 });
 
             modelBuilder.Entity("TaskManager.Models.Task", b =>
@@ -152,17 +223,29 @@ namespace TaskManager.Infrastructure.Migrations
 
                     b.HasOne("TaskManager.Models.Project")
                         .WithMany("Tasks")
-                        .HasForeignKey("ProjectId");
+                        .HasForeignKey("ProjectId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("TaskManager.Models.User", b =>
+            modelBuilder.Entity("TaskManager.Models.TaskMember", b =>
                 {
-                    b.HasOne("TaskManager.Models.Project")
-                        .WithMany("Members")
-                        .HasForeignKey("ProjectId");
+                    b.HasOne("TaskManager.Models.User", "Member")
+                        .WithMany()
+                        .HasForeignKey("MemberId");
 
-                    b.HasOne("TaskManager.Models.Task")
+                    b.HasOne("TaskManager.Models.Task", "Task")
                         .WithMany("AssignedTo")
+                        .HasForeignKey("TaskId");
+                });
+
+            modelBuilder.Entity("TaskManager.Models.TaskTag", b =>
+                {
+                    b.HasOne("TaskManager.Models.Tag", "Tag")
+                        .WithMany()
+                        .HasForeignKey("TagId");
+
+                    b.HasOne("TaskManager.Models.Task", "Task")
+                        .WithMany("Tags")
                         .HasForeignKey("TaskId");
                 });
 #pragma warning restore 612, 618

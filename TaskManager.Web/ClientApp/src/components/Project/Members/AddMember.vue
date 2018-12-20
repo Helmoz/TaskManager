@@ -54,7 +54,7 @@ export default {
   methods: {
     ...mapActions(['loadMemberByEmail']),
     addMember() {
-      this.newMembers.push(this.member)
+      this.newMembers.push({ member: this.member })
       this.email = ''
       this.$emit('update:members', this.newMembers)
     },

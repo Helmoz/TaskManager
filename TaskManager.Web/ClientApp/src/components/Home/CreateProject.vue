@@ -101,10 +101,12 @@ export default {
         deadline: date,
         members: [
           {
-            Uid: this.user.id,
-            Name: this.user.name,
-            PhotoUrl: this.user.photoURL,
-            Email: this.user.email
+            member: {
+              Uid: this.user.id,
+              Name: this.user.name,
+              PhotoUrl: this.user.photoURL,
+              Email: this.user.email
+            }
           }
         ]
       }

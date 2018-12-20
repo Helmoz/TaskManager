@@ -1,4 +1,5 @@
 import axios from 'axios'
+import { stat } from 'fs'
 
 export default {
   state: {
@@ -11,7 +12,13 @@ export default {
       state.projects.push(payload)
     },
     setCurrentProject(state, payload) {
-      state.currentProject = payload
+      let task = []
+      payload.tasks.forEach(el => {
+        el.assignedTo.forEach(elemenet => {
+          if (elemenet.member.uId == payload.userId && !el.isCompleted) task.push(el)
+        })
+      })
+      state.currentProject = { ...payload, assignedToCurrent: task }
     },
     setProjects(state, payload) {
       state.projects = payload
@@ -40,11 +47,11 @@ export default {
         commit('setLoading', false)
       }
     },
-    async editProject({ commit }, payload) {
+    async editProject({ commit, getters }, payload) {
       commit('setLoading', true)
       try {
         let response = await axios.put('/api/Project/UpdateProject', payload)
-        commit('setCurrentProject', response.data)
+        commit('setCurrentProject', { ...response.data, userId: getters.user.id })
         commit('setLoading', false)
         return true
       } catch (err) {
@@ -53,8 +60,8 @@ export default {
         return false
       }
     },
-    setCurrentProject({ commit }, payload) {
-      commit('setCurrentProject', payload)
+    setCurrentProject({ commit, getters }, payload) {
+      commit('setCurrentProject', { ...payload, userId: getters.user.id })
     }
   },
   getters: {

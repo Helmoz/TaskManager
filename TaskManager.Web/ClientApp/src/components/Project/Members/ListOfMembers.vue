@@ -43,12 +43,12 @@ export default {
   props: ['members'],
   data() {
     return {
-      newMembers: this.members
+      newMembers: this.members.map(x => x.member)
     }
   },
   watch: {
     members() {
-      this.newMembers = this.members
+      this.newMembers = this.members.map(x => x.member)
     }
   },
   methods: {

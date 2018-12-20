@@ -9,12 +9,14 @@ namespace TaskManager.Models
         [MaxLength(80)]
         public string Name { get; set; }
 
+        public int  ProjectId { get; set; }
+
         [MaxLength(300)]
         public string Details { get; set; }
 
-        public List<Tag> Tags { get; set; }
+        public List<TaskTag> Tags { get; set; }
 
-        public List<User> AssignedTo { get; set; }
+        public List<TaskMember> AssignedTo { get; set; }
 
         public User Creator { get; set; }
 

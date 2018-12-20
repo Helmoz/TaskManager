@@ -4,6 +4,7 @@ using TaskManager.Infrastructure.Context;
 using TaskManager.Infrastructure.Context.ContextFactory;
 using TaskManager.Infrastructure.Repositories;
 using TaskManager.Models;
+using Task = TaskManager.Models.Task;
 
 namespace TaskManager.Infrastructure.UnitOfWork
 {
@@ -22,6 +23,16 @@ namespace TaskManager.Infrastructure.UnitOfWork
 
         private BaseRepository<User> _userRepository;
 
+        private BaseRepository<Task> _taskRepository;
+
+        private BaseRepository<ProjectMember> _projectMemberRepository;
+
+        private BaseRepository<ProjectTag> _projectTagRepository;
+
+        private BaseRepository<TaskMember> _taskMemberRepository;
+
+        private BaseRepository<TaskTag> _taskTagRepository;
+
         public BaseRepository<Project> ProjectRepository =>
             _projectRepository ?? (_projectRepository = new BaseRepository<Project>(_context));
 
@@ -30,6 +41,21 @@ namespace TaskManager.Infrastructure.UnitOfWork
 
         public BaseRepository<User> UserRepository =>
             _userRepository ?? (_userRepository = new BaseRepository<User>(_context));
+        
+        public BaseRepository<Task> TaskRepository =>
+            _taskRepository ?? (_taskRepository = new BaseRepository<Task>(_context));
+
+        public BaseRepository<ProjectMember> ProjectMemberRepository =>
+            _projectMemberRepository ?? (_projectMemberRepository = new BaseRepository<ProjectMember>(_context));
+
+        public BaseRepository<ProjectTag> ProjectTagRepository =>
+            _projectTagRepository ?? (_projectTagRepository = new BaseRepository<ProjectTag>(_context));
+
+        public BaseRepository<TaskMember> TaskMemberRepository =>
+            _taskMemberRepository ?? (_taskMemberRepository = new BaseRepository<TaskMember>(_context));
+
+        public BaseRepository<TaskTag> TaskTagRepository =>
+            _taskTagRepository ?? (_taskTagRepository = new BaseRepository<TaskTag>(_context));
 
         public Task<int> Save() => _context.SaveChangesAsync();
 

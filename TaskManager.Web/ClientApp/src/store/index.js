@@ -4,6 +4,7 @@ import Vuex from 'vuex'
 import common from './common'
 import user from './user'
 import projects from './projects'
+import tasks from './tasks'
 
 import firebase from 'firebase/app'
 import 'firebase/auth'
@@ -18,6 +19,7 @@ export const store = new Vuex.Store({
   modules: {
     common,
     user,
-    projects
+    projects,
+    tasks
   }
 })

@@ -19,7 +19,7 @@
       <v-flex xs12 sm7 class="ml-2">
         <v-item-group multiple>
           <v-item v-for="tag in newTags" :key="tag.name">
-            <v-chip slot-scope="{ active, toggle }" close @input="removeTag(tag)"># {{tag.name}}</v-chip>
+            <v-chip slot-scope="{ active, toggle }" close @input="removeTag(tag)"># {{tag.tag.name}}</v-chip>
           </v-item>
         </v-item-group>
       </v-flex>
@@ -48,19 +48,14 @@ export default {
       if (!this.$v.tag.$dirty) return errors
       !this.$v.tag.maxLength && errors.push('Слишком длинный тэг')
       !this.$v.tag.required && errors.push('Введите тэг')
-      this.tags.map(x => x.name).indexOf(this.tag.name) !== -1 &&
-        errors.push('Данный тэг уже добавлен')
+      this.tags.map(x => x.name).indexOf(this.tag.name) !== -1 && errors.push('Данный тэг уже добавлен')
       return errors
     }
   },
   methods: {
     addTag() {
-      if (
-        this.tag.name != '' &&
-        this.tag.name.length <= 20 &&
-        this.newTags.map(x => x.name).indexOf(this.tag.name) === -1
-      ) {
-        this.newTags.push({ name: this.tag.name })
+      if (this.tag.name != '' && this.tag.name.length <= 20 && this.newTags.map(x => x.name).indexOf(this.tag.name) === -1) {
+        this.newTags.push({ tag: { name: this.tag.name } })
         this.tag.name = ''
         this.$emit('update:tags', this.newTags)
       }
