@@ -49,6 +49,20 @@ export default {
         return false
       }
     },
+    async deleteTask({ commit, getters }, payload) {
+      commit('setLoading', true)
+      try {
+        let response = await axios.put('/api/Task/DeleteTask', payload)
+        commit('setCurrentProject', { ...response.data, userId: getters.user.id })
+        commit('setCurrentTask', response.data.tasks.filter(x => x.id == payload.id)[0])
+        commit('setLoading', false)
+        return true
+      } catch (err) {
+        console.log(err)
+        commit('setLoading', false)
+        return false
+      }
+    },
     setCurrentTask({ commit }, payload) {
       commit('setCurrentTask', payload)
     }

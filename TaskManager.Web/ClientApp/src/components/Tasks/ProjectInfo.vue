@@ -31,6 +31,11 @@
             {{countOfTasksEnding}}
           </v-chip>
         </v-list-tile-action>
+        <v-list-tile-action class="ml-4" v-if="$vuetify.breakpoint.mdAndUp">
+          <v-chip color="primary" text-color="white">
+            <v-avatar class="secondary">{{completedTasks}}</v-avatar>Завершенных
+          </v-chip>
+        </v-list-tile-action>
       </v-list-tile>
     </v-flex>
   </v-layout>
@@ -46,6 +51,11 @@ export default {
   },
   computed: {
     ...mapGetters(['typeIcons']),
+    completedTasks() {
+      return this.currentProject.tasks.filter(task => {
+        return task.isCompleted
+      }).length
+    },
     countOfTasksEnding() {
       var words = ['Задача', 'Задачи', 'Задач']
       var count = this.currentProject.tasks.length % 100

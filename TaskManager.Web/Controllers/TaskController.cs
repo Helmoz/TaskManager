@@ -83,14 +83,16 @@ namespace TaskManager.Controllers
            return Ok(LoadProject(task.ProjectId));
         }
 
-        [HttpDelete("[action]")]
-        public async Task<IActionResult> DeleteTask([FromBody] Task task)
+        [HttpPut("[action]")]
+        public async Task<IActionResult> DeleteTask([FromBody] Task deletedTask)
         {
+            var task = _unitOfWork.TaskRepository.Get(x => x.Id == deletedTask.Id).FirstOrDefault();
+
             _unitOfWork.TaskRepository.Delete(task);
 
             await _unitOfWork.Save();
 
-            return Ok();
+            return Ok(LoadProject(task.ProjectId));
         }
 
         [HttpPut("[action]")]

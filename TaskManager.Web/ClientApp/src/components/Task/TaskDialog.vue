@@ -1,14 +1,19 @@
 <template>
   <div>
-    <v-dialog v-model="currentDialog" max-width="600">
+    <v-dialog
+      v-model="currentDialog"
+      max-width="600"
+      :fullscreen="$vuetify.breakpoint.xs"
+      :hide-overlay="$vuetify.breakpoint.xs"
+    >
       <v-card>
-        <v-card-title class="headline primary white--text">
+        <v-toolbar card dark color="primary" :fixed="$vuetify.breakpoint.xs">
           <v-spacer></v-spacer>
           <v-btn color="white" flat icon @click="currentDialog = false">
             <v-icon>close</v-icon>
           </v-btn>
-        </v-card-title>
-        <v-container grid-list-xs>
+        </v-toolbar>
+        <v-container grid-list-xs :style="{marginTop: $vuetify.breakpoint.xs ? '56px' : '0px'}">
           <v-layout row wrap>
             <v-flex xs12>
               <v-card-title class="headline pa-0">
@@ -21,6 +26,12 @@
                 >
                   <v-icon class="mr-2">info</v-icon>Важная
                 </v-chip>
+                <v-btn
+                  outline
+                  color="error"
+                  v-if="!currentTask.isPriority"
+                  @click="currentTask.isPriority = true"
+                >Пометить важной</v-btn>
                 <v-chip
                   v-if="currentTask.isSpecial"
                   class="ml-2 warning white--text"
@@ -29,12 +40,6 @@
                 >
                   <v-icon class="mr-2">warning</v-icon>Специальная
                 </v-chip>
-                <v-btn
-                  outline
-                  color="error"
-                  v-if="!currentTask.isPriority"
-                  @click="currentTask.isPriority = true"
-                >Пометить важной</v-btn>
                 <v-btn
                   outline
                   color="warning"
@@ -62,7 +67,7 @@
                 </v-btn>
               </v-card-actions>
               <v-layout row wrap class="mt-4">
-                <v-flex xs6>
+                <v-flex xs12 sm6>
                   <v-subheader>Создатель</v-subheader>
                   <v-list-tile avatar>
                     <v-list-tile-avatar>
@@ -73,7 +78,7 @@
                     </v-list-tile-content>
                   </v-list-tile>
                 </v-flex>
-                <v-flex xs6 v-if="currentTask.completedBy">
+                <v-flex xs12 sm6 v-if="currentTask.completedBy">
                   <v-subheader>Завершено</v-subheader>
                   <v-list-tile avatar>
                     <v-list-tile-avatar>
@@ -86,21 +91,32 @@
                 </v-flex>
               </v-layout>
               <v-card-actions class="pa-0 mt-4" tag="v-layout" align-center>
-                <v-btn class="grey--text grey lighten-3 mr-2 px-0" block depressed @click>
+                <v-btn
+                  class="grey--text grey lighten-3 mr-2 px-0"
+                  block
+                  depressed
+                  @click="deleteT()"
+                >
                   <v-icon class="mr-2">delete</v-icon>Удалить
                 </v-btn>
                 <v-divider></v-divider>
                 <v-btn
                   v-if="!currentTask.isCompleted"
-                  color="success ml-2 px-0"
+                  color="success ml-2 px-4"
                   block
                   depressed
                   @click="complete"
                 >
                   <v-icon class="mr-2">check</v-icon>Завершить
                 </v-btn>
-                <v-btn v-else color="secondary ml-2 px-0" block depressed @click="complete">
-                  <v-icon class="mr-2">check</v-icon>Возобновить
+                <v-btn
+                  v-else
+                  color="grey--text grey lighten-3 ml-2 px-4"
+                  block
+                  depressed
+                  @click="complete"
+                >
+                  <v-icon class="mr-2">subdirectory_arrow_left</v-icon>Возобновить
                 </v-btn>
               </v-card-actions>
             </v-flex>
@@ -135,7 +151,7 @@ export default {
     }
   },
   methods: {
-    ...mapActions(['editTask', 'completeTask']),
+    ...mapActions(['editTask', 'completeTask', 'deleteTask']),
     saveChanges() {
       const task = {
         id: this.currentTask.id,
@@ -154,6 +170,9 @@ export default {
         this.completeTask({ id: this.currentTask.id, completedBy: { uid: this.user.id } })
         this.currentTask.isCompleted = !this.currentTask.isCompleted
       }
+    },
+    deleteT() {
+      this.deleteTask(this.currentTask)
     }
   },
   computed: {
