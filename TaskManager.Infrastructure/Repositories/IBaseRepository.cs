@@ -4,7 +4,7 @@ using System.Linq.Expressions;
 
 namespace TaskManager.Infrastructure.Repositories
 {
-    interface IBaseRepository<TEntity> where TEntity : class
+    public interface IBaseRepository<TEntity> where TEntity : class
     {
         void Insert(TEntity entity);
 

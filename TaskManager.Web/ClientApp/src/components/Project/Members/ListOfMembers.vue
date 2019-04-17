@@ -1,25 +1,15 @@
 <template>
   <v-flex xs12>
-    <v-subheader class="pl-0">Участники
-      <v-chip class="ml-3" label outline color="primary">{{members ? members.length : '0'}}</v-chip>
+    <v-subheader class="pl-0"
+      >Участники
+      <v-chip class="ml-3" label outline color="primary">{{ members ? members.length : '0' }}</v-chip>
       <v-btn round outline color="primary" @click="$emit('addingShow')">Добавить участника</v-btn>
     </v-subheader>
     <v-list two-line v-if="newMembers">
-      <transition-group
-        name="MembersList"
-        v-bind:css="false"
-        v-on:before-enter="beforeEnter"
-        v-on:enter="MembersEnter"
-        v-on:leave="MembersLeave"
-      >
-        <v-list-tile
-          v-for="(item, index) in newMembers"
-          :key="item.name"
-          avatar
-          v-bind:data-index="index"
-        >
+      <transition-group name="MembersList" v-bind:css="false" v-on:before-enter="beforeEnter" v-on:enter="MembersEnter" v-on:leave="MembersLeave">
+        <v-list-tile v-for="(item, index) in newMembers" :key="index" avatar v-bind:data-index="index">
           <v-list-tile-avatar>
-            <img :src="item.photoUrl">
+            <img :src="item.photoUrl" />
           </v-list-tile-avatar>
 
           <v-list-tile-content>

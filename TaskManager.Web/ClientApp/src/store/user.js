@@ -23,10 +23,7 @@ export default {
       commit('setLoading', true)
       try {
         const user = await firebase.auth().signInWithEmailAndPassword(email, password)
-        commit(
-          'setUser',
-          new User(user.user.uid, user.user.email, user.user.displayName, user.user.photoURL)
-        )
+        commit('setUser', new User(user.user.uid, user.user.email, user.user.displayName, user.user.photoURL))
         commit('setLoading', false)
       } catch (error) {
         commit('setLoading', false)
@@ -47,15 +44,7 @@ export default {
           photoURL: 'https://zcoin.io/wp-content/uploads/2017/01/blank-avatar-300x300.png'
         })
 
-        commit(
-          'setUser',
-          new User(
-            currentUser.uid,
-            currentUser.email,
-            currentUser.displayName,
-            currentUser.photoURL
-          )
-        )
+        commit('setUser', new User(currentUser.uid, currentUser.email, currentUser.displayName, currentUser.photoURL))
 
         commit('setLoading', false)
       } catch (error) {
@@ -81,7 +70,7 @@ export default {
     async loadMemberByEmail({ commit }, payload) {
       commit('setLoading', true)
       try {
-        var member = await axios.get('/api/User/GetUserByEmail/' + payload)
+        var member = await axios.get(`/api/User/GetUserByEmail?email=${payload}`)
         commit('setLoading', false)
         return member
       } catch (err) {

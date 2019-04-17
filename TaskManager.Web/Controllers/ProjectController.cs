@@ -3,6 +3,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using TaskManager.Infrastructure.Repositories;
 using TaskManager.Infrastructure.UnitOfWork;
 using TaskManager.Models;
 
@@ -12,11 +13,18 @@ namespace TaskManager.Controllers
     public class ProjectController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;
+        private readonly IProjectRepository _repository;
 
         public ProjectController(IUnitOfWork unitOfWork)
         {
             _unitOfWork = unitOfWork;
         }
+
+        public ProjectController(IProjectRepository repository)
+        {
+            _repository = repository;
+        }
+
 
         private Project LoadProject(int projectId)
         {
@@ -53,6 +61,11 @@ namespace TaskManager.Controllers
                 .ToListAsync();
             return a;
         }
+        public IEnumerable<Project> GetAllProjects()
+        {
+            var a = _repository.GetProjects();
+            return a;
+        }
 
         [HttpPost("[action]")]
         public async Task<IActionResult> AddProject([FromBody]Project project)
@@ -69,7 +82,7 @@ namespace TaskManager.Controllers
             await _unitOfWork.Save();
 
             return Ok(LoadProject(project.Id));
-        }
+        }       
 
         [HttpPut("[action]")]
         public async Task<IActionResult> UpdateProject([FromBody]Project updatedProject)

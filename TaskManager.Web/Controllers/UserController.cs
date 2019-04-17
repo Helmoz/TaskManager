@@ -17,8 +17,8 @@ namespace TaskManager.Controllers
             _unitOfWork = unitOfWork;
         }
 
-        [HttpGet("[action]/{email}")]
-        public async Task<User> GetUserByEmail(string email)
+        [HttpGet("[action]")]
+        public async Task<User> GetUserByEmail([FromQuery] string email)
         {
             return await _unitOfWork.UserRepository.Get(x=>x.Email==email).FirstOrDefaultAsync();
         }

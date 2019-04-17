@@ -1,13 +1,15 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.28010.2003
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.28729.10
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TaskManager.Web", "TaskManager.Web\TaskManager.Web.csproj", "{7A0268D1-51B1-4649-BAF0-D4D4713F4768}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TaskManager.Models", "TaskManager.Models\TaskManager.Models.csproj", "{10A49D2B-7A5D-47AF-B209-1E3B6400369C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TaskManager.Models", "TaskManager.Models\TaskManager.Models.csproj", "{10A49D2B-7A5D-47AF-B209-1E3B6400369C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TaskManager.Infrastructure", "TaskManager.Infrastructure\TaskManager.Infrastructure.csproj", "{89F1F8FC-9874-4D24-9A2B-A3E3D4904975}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TaskManager.Infrastructure", "TaskManager.Infrastructure\TaskManager.Infrastructure.csproj", "{89F1F8FC-9874-4D24-9A2B-A3E3D4904975}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TaskManager.Web.UnitTests", "TaskManager.Web.UnitTests\TaskManager.Web.UnitTests.csproj", "{B1FB885C-6E43-4382-8741-78089ABD9C3E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -27,6 +29,10 @@ Global
 		{89F1F8FC-9874-4D24-9A2B-A3E3D4904975}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{89F1F8FC-9874-4D24-9A2B-A3E3D4904975}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{89F1F8FC-9874-4D24-9A2B-A3E3D4904975}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B1FB885C-6E43-4382-8741-78089ABD9C3E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B1FB885C-6E43-4382-8741-78089ABD9C3E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B1FB885C-6E43-4382-8741-78089ABD9C3E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B1FB885C-6E43-4382-8741-78089ABD9C3E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
