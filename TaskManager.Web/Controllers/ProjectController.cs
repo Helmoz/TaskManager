@@ -3,6 +3,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using TaskManager.Filters;
 using TaskManager.Infrastructure.Repositories;
 using TaskManager.Infrastructure.UnitOfWork;
 using TaskManager.Models;
@@ -20,12 +21,12 @@ namespace TaskManager.Controllers
             _unitOfWork = unitOfWork;
         }
 
-        public ProjectController(IProjectRepository repository)
-        {
-            _repository = repository;
-        }
+        //public ProjectController(IProjectRepository repository)
+        //{
+        //    _repository = repository;
+        //}
 
-
+        [ActionReport]
         private Project LoadProject(int projectId)
         {
             return _unitOfWork.ProjectRepository
@@ -44,6 +45,7 @@ namespace TaskManager.Controllers
         }
 
         [HttpGet("[action]")]
+        [ActionReport]
         public async Task<IEnumerable<Project>> GetProjects()
         {
             var a = await _unitOfWork.ProjectRepository
@@ -61,6 +63,8 @@ namespace TaskManager.Controllers
                 .ToListAsync();
             return a;
         }
+
+        [ActionReport]
         public IEnumerable<Project> GetAllProjects()
         {
             var a = _repository.GetProjects();
@@ -68,6 +72,7 @@ namespace TaskManager.Controllers
         }
 
         [HttpPost("[action]")]
+        [ActionReport]
         public async Task<IActionResult> AddProject([FromBody]Project project)
         {
             if (_unitOfWork.ProjectRepository.Get().Any(x => x.Name == project.Name))
@@ -85,6 +90,7 @@ namespace TaskManager.Controllers
         }       
 
         [HttpPut("[action]")]
+        [ActionReport]
         public async Task<IActionResult> UpdateProject([FromBody]Project updatedProject)
         {
             var project = LoadProject(updatedProject.Id);
@@ -134,6 +140,7 @@ namespace TaskManager.Controllers
         }
 
         [HttpDelete("[action]")]
+        [ActionReport]
         public async Task<IActionResult> DeleteProject([FromBody] Project project)
         {
             _unitOfWork.ProjectRepository.Delete(project);

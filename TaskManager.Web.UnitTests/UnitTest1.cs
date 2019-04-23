@@ -1,14 +1,10 @@
-using Microsoft.EntityFrameworkCore;
 using Moq;
 using NUnit.Framework;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using TaskManager.Controllers;
 using TaskManager.Infrastructure.Repositories;
-using TaskManager.Infrastructure.UnitOfWork;
 using TaskManager.Models;
-using Task = System.Threading.Tasks.Task;
 
 namespace Tests
 {
